@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SuplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,4 +43,9 @@ Route::middleware("auth:web")->group(function () {
     Route::get('/suplier/edit/{suplier}', [SuplierController::class, 'edit'])->name('suplier.edit');
     Route::post('/suplier/{suplier}', [SuplierController::class, 'update'])->name('suplier.update');
     Route::delete('/suplier/{suplier}', [SuplierController::class, 'destroy'])->name('suplier.destroy');
+
+
+    Route::prefix("sales")->name("sales.")->controller(SaleController::class)->group(function (){
+        Route::get("", "index")->name("index");
+    });
 });
