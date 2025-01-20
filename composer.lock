@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffa3a16f4d7ccb0e27ba19853d2ec92c",
+    "content-hash": "d31f5840dd1d85e47b0bd47d4ed345e3",
     "packages": [
         {
             "name": "archtechx/enums",
@@ -1099,6 +1099,96 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "iqbalatma/laravel-service-repo",
+            "version": "3.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iqbalatma/laravel-service-repo.git",
+                "reference": "8e5eba90378cebdc02f02f4795f0b8724b13dab8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iqbalatma/laravel-service-repo/zipball/8e5eba90378cebdc02f02f4795f0b8724b13dab8",
+                "reference": "8e5eba90378cebdc02f02f4795f0b8724b13dab8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Iqbalatma\\LaravelServiceRepo\\ServiceRepoProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helper.php"
+                ],
+                "psr-4": {
+                    "Iqbalatma\\LaravelServiceRepo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "iqbalatma",
+                    "email": "iqbalatma@gmail.com"
+                }
+            ],
+            "description": "Project for extend base class on laravel with service repo pattern",
+            "support": {
+                "issues": "https://github.com/iqbalatma/laravel-service-repo/issues",
+                "source": "https://github.com/iqbalatma/laravel-service-repo/tree/3.4.2"
+            },
+            "time": "2024-08-26T19:12:38+00:00"
+        },
+        {
+            "name": "iqbalatma/laravel-utils",
+            "version": "1.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iqbalatma/laravel-utils.git",
+                "reference": "2d1e66a7124fd3cd75fd8aa3c447c95079b74dd0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iqbalatma/laravel-utils/zipball/2d1e66a7124fd3cd75fd8aa3c447c95079b74dd0",
+                "reference": "2d1e66a7124fd3cd75fd8aa3c447c95079b74dd0",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Iqbalatma\\LaravelUtils\\LaravelUtilProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Iqbalatma\\LaravelUtils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Iqbal Atma Muliawan",
+                    "email": "iqbalatma@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/iqbalatma/laravel-utils/issues",
+                "source": "https://github.com/iqbalatma/laravel-utils/tree/1.5.3"
+            },
+            "time": "2024-04-24T10:56:19+00:00"
         },
         {
             "name": "laravel/framework",

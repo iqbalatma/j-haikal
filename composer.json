@@ -8,6 +8,8 @@
     "require": {
         "php": "^8.2",
         "archtechx/enums": "^1.1",
+        "iqbalatma/laravel-service-repo": "^3.4",
+        "iqbalatma/laravel-utils": "^1.5",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9"
     },
