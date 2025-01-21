@@ -187,6 +187,14 @@
                 </li>
 
                 <li
+                    class="sidebar-item @if(request()->routeIs("transactions*")) active @endif ">
+                    <a href="{{route('transactions.index')}}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Transaksi</span>
+                    </a>
+                </li>
+
+                <li
                     class="sidebar-item @if(request()->routeIs("sales*")) active @endif ">
                     <a href="{{route('sales.index')}}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>

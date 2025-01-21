@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SuplierController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("guest")->group(function () {
@@ -46,6 +47,12 @@ Route::middleware("auth:web")->group(function () {
 
 
     Route::prefix("sales")->name("sales.")->controller(SaleController::class)->group(function (){
+        Route::get("", "index")->name("index");
+        Route::get("create", "create")->name("create");
+        Route::post("", "store")->name("store");
+    });
+
+    Route::prefix("transactions")->name("transactions.")->controller(TransactionController::class)->group(function (){
         Route::get("", "index")->name("index");
         Route::get("create", "create")->name("create");
         Route::post("", "store")->name("store");
