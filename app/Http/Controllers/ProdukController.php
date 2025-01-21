@@ -29,6 +29,7 @@ class ProdukController extends Controller
             'nama_produk' => 'string|required',
             'jenis_produk' => 'string|required',
             'satuan' => 'string|required',
+            'quantity' => 'numeric|required',
             'harga_satuan' => 'string|required'
         ]);
 

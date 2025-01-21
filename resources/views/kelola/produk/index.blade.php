@@ -14,19 +14,7 @@
                         </div>
                     </div>
 
-                  @if(session()->has('success'))
-                     <div class="alert alert-success alert-dismissble fade show" role="alert">
-                     {{ session('success') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert"
-                     aria-label="Close"></button>
-                     </div>
-                  @elseif(session()->has('failed'))
-                     <div class="alert alert-danger alert-dismissble fade show" role="alert">
-                     {{ session('failed') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert"
-                     aria-label="Close"></button>
-                     </div>
-                  @endif
+
                     <div class="card-content">
                         <div class="card-body">
                             <!-- Table with outer spacing -->
@@ -39,6 +27,7 @@
                                             <th>NAMA PRODUK</th>
                                             <th>JENIS PRODUK</th>
                                             <th>SATUAN</th>
+                                            <th>STOK</th>
                                             <th>HARGA SATUAN</th>
                                             <th>AKSI</th>
                                         </tr>
@@ -52,6 +41,7 @@
                                           <td>{{ $produk->nama_produk }}</td>
                                           <td>{{ $produk->jenis_produk }}</td>
                                           <td>{{ $produk->satuan}}</td>
+                                          <td>{{ $produk->quantity}}</td>
                                           <td>{{ formatToRupiah($produk->harga_satuan) }}</td>
                                           <td>
                                                 <div class="d-flex">

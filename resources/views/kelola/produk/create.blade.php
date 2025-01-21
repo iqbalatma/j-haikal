@@ -64,6 +64,17 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
+                                    <label for="first-name-horizontal">Stok</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <input type="number" id="quantity" name="quantity"
+                                           class="form-control @error('quantity') is invalid @enderror"
+                                           value="{{ old('quantity') }}" placeholder="Stok">
+                                    @error('quantity')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
                                     <label for="first-name-horizontal">Harga Satuan</label>
                                 </div>
                                 <div class="col-md-8 form-group">
