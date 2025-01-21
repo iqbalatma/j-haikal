@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produk extends Model
 {
     use HasFactory;
-        protected $lable = "produks";
-    protected $fillable = ['kode_produk','nama_produk', 'jenis_produk','satuan','harga_satuan'];
+
+    protected $lable = "produks";
+    protected $fillable = ['kode_produk', 'nama_produk', 'jenis_produk', 'satuan', 'harga_satuan', "quantity"];
 }

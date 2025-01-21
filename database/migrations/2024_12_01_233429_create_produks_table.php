@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('jenis_produk');
             $table->string('satuan');
             $table->bigInteger('harga_satuan');
+            $table->bigInteger('quantity');
             $table->timestamps();
         });
     }

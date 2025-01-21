@@ -26,6 +26,8 @@ class TransactionFactory extends Factory
             "supplier_id" => Suplier::query()->get()->random()->id,
             "type" => $this->faker->randomElement(TransactionType::names()),
             "quantity" => $this->faker->numberBetween(1, 100),
+            "stock_before" => $this->faker->numberBetween(1, 100),
+            "stock_after" => $this->faker->numberBetween(1, 100),
             "created_by_id" => User::query()->get()->random()->id,
             "transaction_date" => Carbon::now()
         ];

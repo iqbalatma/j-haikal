@@ -12,7 +12,8 @@ class Transaction extends Model
     use HasFactory, HasUuids;
     protected $table = 'transactions';
     protected $fillable = [
-        "product_id", "supplier_id", "type", "quantity", "created_by_id", "transaction_date"
+        "product_id", "supplier_id", "type", "quantity", "created_by_id", "transaction_date",
+        "stock_before", "stock_after"
     ];
 
     /**

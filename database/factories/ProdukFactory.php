@@ -24,7 +24,8 @@ class ProdukFactory extends Factory
             "nama_produk" =>"Produk " . $this->faker->name(),
             "jenis_produk" => $this->faker->randomElement(Type::names()),
             "satuan" => $this->faker->randomElement(Unit::names()),
-            "harga_satuan" => $this->faker->numberBetween(1, 100)
+            "harga_satuan" => $this->faker->numberBetween(1, 100),
+            "quantity" => $this->faker->numberBetween(1, 100)
         ];
     }
 }

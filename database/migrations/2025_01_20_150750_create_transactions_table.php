@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger("supplier_id")->nullable();
             $table->string("type")->nullable();
             $table->integer("quantity")->nullable();
+            $table->integer("stock_before")->nullable();
+            $table->integer("stock_after")->nullable();
             $table->unsignedBigInteger("created_by_id")->nullable();
             $table->dateTime("transaction_date")->nullable();
             $table->timestamps();

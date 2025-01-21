@@ -10,24 +10,11 @@
                     <div class="card-header">
                         <h4 class="card-title text-center">Table Kelola Penjualan</h4>
                         <div class="ms-auto">
-                        <a class="btn btn-primary" href="{{ route('produk.create') }}">Tambah Produk</a>
+                        <a class="btn btn-primary" href="{{ route('sales.create') }}">Tambah Penjualan</a>
                         </div>
                     </div>
 
-                  @if(session()->has('success'))
-                     <div class="alert alert-success alert-dismissble fade show" role="alert">
-                     {{ session('success') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert"
-                     aria-label="Close"></button>
-                     </div>
-                  @elseif(session()->has('failed'))
-                     <div class="alert alert-danger alert-dismissble fade show" role="alert">
-                     {{ session('failed') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert"
-                     aria-label="Close"></button>
-                     </div>
-                  @endif
-                    <div class="card-content">
+                        <div class="card-content">
                         <div class="card-body">
                             <!-- Table with outer spacing -->
                             <div class="table-responsive">
@@ -42,6 +29,8 @@
                                             <th>HARGA SATUAN</th>
                                             <th>NAMA SUPPLIER</th>
                                             <th>KUANTITAS</th>
+                                            <th>STOK SEBELUMNYA</th>
+                                            <th>STOK SESUDAHNYA</th>
                                             <th>TANGGAL TRANSAKSI</th>
                                         </tr>
                                     </thead>
@@ -57,6 +46,8 @@
                                             <td>{{ formatToRupiah($sale->product?->harga_satuan) }}</td>
                                             <td>{{ $sale->supplier?->nama_suplier }}</td>
                                             <td>{{ $sale->quantity }} {{$sale->product?->satuan}}</td>
+                                            <td>{{ $sale->stock_before}} {{$sale->product?->satuan}}</td>
+                                            <td>{{ $sale->stock_after}} {{$sale->product?->satuan}}</td>
                                             <td>{{$sale->transaction_date}}</td>
                                         </tr>
                                        @endforeach

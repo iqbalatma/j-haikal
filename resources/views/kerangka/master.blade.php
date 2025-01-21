@@ -164,6 +164,7 @@
         </header>
         <div id="main-content">
             <div class="page-heading">
+                <x-alert></x-alert>
                 @yield('content')
             </div>
 
