@@ -28,11 +28,35 @@ class SaleService extends BaseService
      */
     public function getAllDataPaginated(): array
     {
+        $query = TransactionRepository::with("product")
+            ->orderColumn("transaction_date", "DESC");
+
+        if ($productCode = request()->input("kode_produk")) {
+            $query->whereHas("product", function ($query) use ($productCode) {
+                return $query->where("kode_produk", $productCode);
+            });
+        }
+
+        if ($productName = request()->input("nama_produk")) {
+            $query->whereHas("product", function ($query) use ($productName) {
+                return $query->where("nama_produk", "LIKE", "%$productName%");
+            });
+        }
+
+
+        if ($month = request()->input("month")) {
+            $query->whereMonth("transaction_date", "=", $month);
+        }
+
+
+        if ($year = request()->input("year")) {
+            $query->whereYear("transaction_date", "=", $year);
+        }
+
+
         return [
             "title" => "Transactions",
-            "sales" => TransactionRepository::with("product")
-                ->orderColumn("transaction_date", "DESC")
-                ->getAllDataPaginated(["type" => TransactionType::SALE->name])
+            "sales" => $query->getAllDataPaginated(["type" => TransactionType::SALE->name])
         ];
     }
 

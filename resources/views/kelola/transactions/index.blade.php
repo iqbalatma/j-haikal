@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">
-                            <Filter></Filter>
+                            Filter
                         </h4>
                     </div>
                     <div class="card-content">
@@ -49,7 +49,7 @@
                                         <div class="form-group">
                                             <label for="month" class="form-label">Bulan</label>
                                             <select class="form-control" name="month">
-                                                <option>Silahkan pilih bulan</option>
+                                                <option value>Silahkan pilih bulan</option>
                                                 @foreach(getMonths() as $key => $month)
                                                     <option value="{{$key}}" @if(request()->input('month') == $key) selected @endif>{{$month}}</option>
                                                 @endforeach
