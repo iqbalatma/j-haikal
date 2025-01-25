@@ -13,17 +13,17 @@
                         <a class="btn btn-primary" href="{{ route('suplier.create') }}">Tambah Suplier</a>
                         </div>
                     </div>
-                    
+
                   @if(session()->has('success'))
                      <div class="alert alert-success alert-dismissble fade show" role="alert">
                      {{ session('success') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert"
                      aria-label="Close"></button>
                      </div>
                   @elseif(session()->has('failed'))
                      <div class="alert alert-danger alert-dismissble fade show" role="alert">
                      {{ session('failed') }}
-                     <button type="button" class="btn-close" data-bs-dismiss="alert" 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert"
                      aria-label="Close"></button>
                      </div>
                   @endif
@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <!-- Table with outer spacing -->
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="supplier">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
@@ -41,7 +41,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+
                                        @foreach ($supliers as $suplier)
                                         <tr>
                                           <td>{{ $loop->iteration }}</td>
@@ -52,15 +52,15 @@
                                                     <a href="{{ route('suplier.edit', $suplier->id) }}"
                                                         class="btn btn-success show_confirm"
                                                         style="margin-right: 5px">Edit</a>
-                                                        
+
                                                     <form action="{{ route('suplier.destroy', $suplier->id) }}"
-                                                        method="POST"> 
+                                                        method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         {{-- <button class="btn btn-danger" onclick="deleteConfirm(event)">
                                                             {{ __('Hapus') }}
                                                         </button> --}}
-                                                        <button class="btn btn-danger"> Hapus </button> 
+                                                        <button class="btn btn-danger"> Hapus </button>
                                                     </form>
                                                 </div>
                                             </td>

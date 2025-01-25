@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <!-- Table with outer spacing -->
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="product">
                                     <thead>
                                         <tr>
                                             <th>NO</th>

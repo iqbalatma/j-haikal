@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services;
-
 use App\Enums\Enums\TransactionType;
 use App\Models\Produk;
 use App\Models\Suplier;
@@ -13,15 +12,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Iqbalatma\LaravelServiceRepo\BaseService;
 
-class SaleService extends BaseService
+class RestockService extends BaseService
 {
     protected $repository;
-
 
     public function __construct()
     {
         // $this->repository
     }
+
 
     /**
      * @return array
@@ -29,13 +28,10 @@ class SaleService extends BaseService
     public function getAllDataPaginated(): array
     {
         return [
-            "title" => "Transactions",
-            "sales" => TransactionRepository::with("product")
-                ->orderColumn("transaction_date", "DESC")
-                ->getAllDataPaginated(["type" => TransactionType::SALE->name])
+            "title" => "Restok",
+            "products" => Produk::query()->get()
         ];
     }
-
 
     /**
      * @return array
@@ -65,19 +61,26 @@ class SaleService extends BaseService
                     "message" => "Produk tidak ditemukan"
                 ];
             }
+            if ($product?->quantity < $requestedData["quantity"]) {
+                DB::rollBack();
+                return [
+                    "success" => false,
+                    "message" => "Kuantitas produk tidak cukup"
+                ];
+            }
 
             Transaction::query()->create([
                 "product_id" => $requestedData["product_id"],
                 "supplier_id" => $requestedData["supplier_id"],
                 "quantity" => $requestedData["quantity"],
-                "type" => TransactionType::RESTOCK->name,
+                "type" => TransactionType::SALE->name,
                 "created_by_id" => Auth::id(),
                 "transaction_date" => Carbon::now(),
                 "stock_before" => $product?->quantity,
-                "stock_after" => $product?->quantity + $requestedData["quantity"],
+                "stock_after" => $product?->quantity - $requestedData["quantity"],
             ]);
 
-            $product->quantity += $requestedData["quantity"];
+            $product->quantity -= $requestedData["quantity"];
             $product->save();
             DB::commit();
             $response = [

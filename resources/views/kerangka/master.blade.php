@@ -118,7 +118,8 @@
 <script src="{{asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
 
 <script src="{{asset('dist/assets/compiled/js/app.js')}}"></script>
-
+@vite(["resources/js/app.js"])
+@stack("scripts")
 
 </body>
 

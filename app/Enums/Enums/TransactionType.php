@@ -8,6 +8,4 @@ enum TransactionType {
     use Names;
     case RESTOCK;
     case SALE;
-    case EXPIRED;
-    case BROKEN;
 }
