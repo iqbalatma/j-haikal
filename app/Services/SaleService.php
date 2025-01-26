@@ -28,8 +28,14 @@ class SaleService extends BaseService
      */
     public function getAllDataPaginated(): array
     {
+        $month = request()->input("month", Carbon::now()->month);
+        $year = request()->input("year", Carbon::now()->year);
+
         $query = TransactionRepository::with("product")
-            ->orderColumn("transaction_date", "DESC");
+            ->where("type", TransactionType::SALE->name)
+            ->orderColumn("transaction_date", "DESC")
+            ->whereMonth("transaction_date", "=", $month)
+            ->whereYear("transaction_date", "=", $year);
 
         if ($productCode = request()->input("kode_produk")) {
             $query->whereHas("product", function ($query) use ($productCode) {
@@ -44,10 +50,6 @@ class SaleService extends BaseService
         }
 
 
-        $month = request()->input("month", Carbon::now()->month);
-        $year = request()->input("year", Carbon::now()->year);
-        $query->whereMonth("transaction_date", "=", $month);
-        $query->whereYear("transaction_date", "=", $year);
 
         $transactionSummary = Transaction::query()
             ->select([
@@ -59,6 +61,7 @@ class SaleService extends BaseService
             ->join("produks", "produks.id", "=", "transactions.product_id")
             ->whereMonth("transaction_date", "=", $month)
             ->whereYear("transaction_date", "=", $year)
+            ->where("type", TransactionType::SALE->name)
             ->first();
 
         $transactionByUnit = Transaction::query()
@@ -69,8 +72,22 @@ class SaleService extends BaseService
             ->join("produks", "produks.id", "=", "transactions.product_id")
             ->whereMonth("transaction_date", "=", $month)
             ->whereYear("transaction_date", "=", $year)
+            ->where("type", TransactionType::SALE->name)
             ->groupBy("produks.satuan")
             ->get();
+
+        $transactionByDate = Transaction::query()
+            ->select([
+                DB::raw("DATE(transaction_date) as date"),
+                DB::raw("count(transactions.id) as total_transaction"),
+                DB::raw("sum(transactions.quantity) as total_quantity"),
+            ])
+            ->whereMonth("transaction_date", "=", $month)
+            ->whereYear("transaction_date", "=", $year)
+            ->where("type", TransactionType::SALE->name)
+            ->groupBy("date")
+            ->get();
+
         return [
             "title" => "Transactions",
             "sales" => $query->getAllDataPaginated(["type" => TransactionType::SALE->name]),
@@ -86,6 +103,11 @@ class SaleService extends BaseService
                     "values" => $transactionByUnit->map(function ($item) {
                         return $item->total;
                     }),
+                ],
+                "by_date" => [
+                    "labels" => $transactionByDate->pluck("date"),
+                    "total_transactions" => $transactionByDate->pluck("total_transaction"),
+                    "total_quantities" => $transactionByDate->pluck("total_quantity"),
                 ]
             ]
         ];

@@ -162,17 +162,17 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-8">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Visitors Profile</h4>
                             </div>
-                            <div class="card-body">
-                                <div id="chart-visitors-profile"></div>
+                            <div class="card-body" style="height: 600px">
+                                <canvas id="by_date"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Produk Berdasarkan Satuan</h4>
@@ -244,10 +244,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const ctx = document.getElementById('by_unit');
         const by_unit_labels = @json($summaries["by_unit"]["labels"]);
         const by_unit_values = @json($summaries["by_unit"]["values"]);
-        const data = {
+        const by_date_labels = @json($summaries["by_date"]["labels"]);
+        const by_date_total_transactions = @json($summaries["by_date"]["total_transactions"]);
+        const by_date_total_quantities = @json($summaries["by_date"]["total_quantities"]);
+
+
+        const ctxByUnit = document.getElementById('by_unit');
+        const dataByUnit = {
             labels: by_unit_labels,
             datasets: [
                 {
@@ -256,9 +261,9 @@
                 }
             ]
         };
-        new Chart(ctx, {
+        new Chart(ctxByUnit, {
             type: 'doughnut',
-            data: data,
+            data: dataByUnit,
             options: {
                 responsive: true,
                 plugins: {
@@ -272,24 +277,44 @@
                 }
             },
         });
-    </script>
-    <!-- Basic Tables end -->
-    {{-- <script>
-        window.deleteConfirm = function(e) {
-            e.preventDefault();
-            var form = e.target.form;
-            swal({
-                    title: " Apakah Anda Yakin ingin menghapus data?",
-                    text: "Data Yang Dihapus Tidak Akan Kembali Lagi.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
+
+
+        const ctxByDate = document.getElementById('by_date');
+        const dataByDate = {
+            labels: by_date_labels,
+            datasets: [
+                {
+                    label: 'Jumlah Transaksi',
+                    data: by_date_total_transactions,
+                    borderColor: "#FF6347",
+                    yAxisID: 'y',
+                },
+                {
+                    label: 'Kuantitas Transaksi',
+                    data: by_date_total_quantities,
+                    borderColor: "#1E90FF",
+                    yAxisID: 'y1',
+                }
+            ]
+        };
+        new Chart(ctxByDate, {
+            type: 'line',
+            data: dataByDate,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Total Transaksi dan Kuantitas'
                     }
-                });
-        }
-    </script> --}}
+                },
+            },
+        });
+
+    </script>
 @endsection
