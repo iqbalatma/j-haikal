@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('kerangka.master')
 @section('title', 'Halaman Produk')
 @section('content')
@@ -51,7 +52,8 @@
                                             <select class="form-control" name="month">
                                                 <option value>Silahkan pilih bulan</option>
                                                 @foreach(getMonths() as $key => $month)
-                                                    <option value="{{$key}}" @if(request()->input('month') == $key) selected @endif>{{$month}}</option>
+                                                    <option value="{{$key}}"
+                                                            @if(request()->input('month', Carbon::now()->month) == $key) selected @endif>{{$month}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -62,7 +64,8 @@
                                             <select class="form-control" name="year">
                                                 <option value>Silahkan pilih tahun</option>
                                                 @for($i = 2024;  $i<2030;$i++)
-                                                    <option value="{{$i}}" @if(request()->input('year') == $i) selected @endif>{{$i}}</option>
+                                                    <option value="{{$i}}"
+                                                            @if(request()->input('year', Carbon::now()->year) == $i) selected @endif>{{$i}}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -87,38 +90,132 @@
                 </div>
 
 
+                <div class="row">
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon purple mb-2">
+                                            <i class="iconly-boldShow"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Total Transaksi</h6>
+                                        <h6 class="font-extrabold mb-0">{{$summaries["total_transaction"]}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon blue mb-2">
+                                            <i class="iconly-boldProfile"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Total Asset (Harga x Kuantitas)</h6>
+                                        <h6 class="font-extrabold mb-0">{{$summaries["total_asset"]}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon green mb-2">
+                                            <i class="iconly-boldAdd-User"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Total Produk</h6>
+                                        <h6 class="font-extrabold mb-0">{{$summaries["total_product"]}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon red mb-2">
+                                            <i class="iconly-boldBookmark"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Total Supplier</h6>
+                                        <h6 class="font-extrabold mb-0">{{$summaries["total_supplier"]}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Visitors Profile</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-visitors-profile"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Produk Berdasarkan Satuan</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="by_unit"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title text-center">Table Kelola Penjualan</h4>
                         <div class="ms-auto">
-                        <a class="btn btn-primary" href="{{ route('sales.create') }}">Tambah Penjualan</a>
+                            <a class="btn btn-primary" href="{{ route('sales.create') }}">Tambah Penjualan</a>
                         </div>
                     </div>
 
-                        <div class="card-content">
+                    <div class="card-content">
                         <div class="card-body">
                             <!-- Table with outer spacing -->
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>KODE PRODUK</th>
-                                            <th>NAMA PRODUK</th>
-                                            <th>JENIS PRODUK</th>
-                                            <th>SATUAN</th>
-                                            <th>HARGA SATUAN</th>
-                                            <th>NAMA SUPPLIER</th>
-                                            <th>KUANTITAS</th>
-                                            <th>STOK SEBELUMNYA</th>
-                                            <th>STOK SESUDAHNYA</th>
-                                            <th>TANGGAL TRANSAKSI</th>
-                                        </tr>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>KODE PRODUK</th>
+                                        <th>NAMA PRODUK</th>
+                                        <th>JENIS PRODUK</th>
+                                        <th>SATUAN</th>
+                                        <th>HARGA SATUAN</th>
+                                        <th>NAMA SUPPLIER</th>
+                                        <th>KUANTITAS</th>
+                                        <th>STOK SEBELUMNYA</th>
+                                        <th>STOK SESUDAHNYA</th>
+                                        <th>TANGGAL TRANSAKSI</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
 
-                                       @foreach ($sales as $key => $sale)
+                                    @foreach ($sales as $key => $sale)
                                         <tr>
                                             <td>{{ $sales->firstItem() + $key }}</td>
                                             <td>{{ $sale->product?->kode_produk }}</td>
@@ -132,7 +229,7 @@
                                             <td>{{ $sale->stock_after}} {{$sale->product?->satuan}}</td>
                                             <td>{{$sale->transaction_date}}</td>
                                         </tr>
-                                       @endforeach
+                                    @endforeach
                                     </tbody>
                                 </table>
                                 {{ $sales->withQueryString()->links() }}
@@ -143,6 +240,39 @@
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('by_unit');
+        const by_unit_labels = @json($summaries["by_unit"]["labels"]);
+        const by_unit_values = @json($summaries["by_unit"]["values"]);
+        const data = {
+            labels: by_unit_labels,
+            datasets: [
+                {
+                    label: 'Total',
+                    data: by_unit_values,
+                }
+            ]
+        };
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Rangkuman Berdasarkan Satuan'
+                    }
+                }
+            },
+        });
+    </script>
     <!-- Basic Tables end -->
     {{-- <script>
         window.deleteConfirm = function(e) {

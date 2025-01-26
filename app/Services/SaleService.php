@@ -44,19 +44,50 @@ class SaleService extends BaseService
         }
 
 
-        if ($month = request()->input("month")) {
-            $query->whereMonth("transaction_date", "=", $month);
-        }
+        $month = request()->input("month", Carbon::now()->month);
+        $year = request()->input("year", Carbon::now()->year);
+        $query->whereMonth("transaction_date", "=", $month);
+        $query->whereYear("transaction_date", "=", $year);
 
+        $transactionSummary = Transaction::query()
+            ->select([
+                DB::raw("count(transactions.id) as total_transaction"),
+                DB::raw("count(DISTINCT transactions.product_id) as total_product"),
+                DB::raw("count(DISTINCT transactions.supplier_id) as total_supplier"),
+                DB::raw("sum(transactions.quantity * produks.harga_satuan) as total_assets"),
+            ])
+            ->join("produks", "produks.id", "=", "transactions.product_id")
+            ->whereMonth("transaction_date", "=", $month)
+            ->whereYear("transaction_date", "=", $year)
+            ->first();
 
-        if ($year = request()->input("year")) {
-            $query->whereYear("transaction_date", "=", $year);
-        }
-
-
+        $transactionByUnit = Transaction::query()
+            ->select([
+                "produks.satuan",
+                DB::raw("count(transactions.id) as total"),
+            ])
+            ->join("produks", "produks.id", "=", "transactions.product_id")
+            ->whereMonth("transaction_date", "=", $month)
+            ->whereYear("transaction_date", "=", $year)
+            ->groupBy("produks.satuan")
+            ->get();
         return [
             "title" => "Transactions",
-            "sales" => $query->getAllDataPaginated(["type" => TransactionType::SALE->name])
+            "sales" => $query->getAllDataPaginated(["type" => TransactionType::SALE->name]),
+            "summaries" => [
+                "total_transaction" => $transactionSummary->total_transaction,
+                "total_product" => $transactionSummary->total_product,
+                "total_supplier" => $transactionSummary->total_supplier,
+                "total_asset" => formatToRupiah($transactionSummary->total_assets),
+                "by_unit" => [
+                    "labels" => $transactionByUnit->map(function ($item) {
+                        return $item->satuan;
+                    }),
+                    "values" => $transactionByUnit->map(function ($item) {
+                        return $item->total;
+                    }),
+                ]
+            ]
         ];
     }
 
@@ -82,7 +113,7 @@ class SaleService extends BaseService
             DB::beginTransaction();
             $product = Produk::query()->findOrFail($requestedData["product_id"]);
 
-            if (!$product){
+            if (!$product) {
                 DB::rollBack();
                 return [
                     "success" => false,
