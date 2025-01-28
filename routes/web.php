@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ForecastingController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RestockController;
 use App\Http\Controllers\SaleController;
@@ -47,20 +48,24 @@ Route::middleware("auth:web")->group(function () {
     Route::delete('/suplier/{suplier}', [SuplierController::class, 'destroy'])->name('suplier.destroy');
 
 
-    Route::prefix("sales")->name("sales.")->controller(SaleController::class)->group(function (){
+    Route::prefix("forecasting")->name("forecasting.")->controller(ForecastingController::class)->group(function () {
+        Route::get("", "index")->name("index");
+    });
+
+    Route::prefix("sales")->name("sales.")->controller(SaleController::class)->group(function () {
         Route::get("", "index")->name("index");
         Route::get("create", "create")->name("create");
         Route::post("", "store")->name("store");
     });
 
 
-    Route::prefix("restocks")->name("restocks.")->controller(RestockController::class)->group(function (){
+    Route::prefix("restocks")->name("restocks.")->controller(RestockController::class)->group(function () {
         Route::get("", "index")->name("index");
         Route::get("create", "create")->name("create");
         Route::post("", "store")->name("store");
     });
 
-    Route::prefix("transactions")->name("transactions.")->controller(TransactionController::class)->group(function (){
+    Route::prefix("transactions")->name("transactions.")->controller(TransactionController::class)->group(function () {
         Route::get("", "index")->name("index");
         Route::get("create", "create")->name("create");
         Route::post("", "store")->name("store");

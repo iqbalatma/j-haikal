@@ -29,7 +29,7 @@ class TransactionFactory extends Factory
             "stock_before" => $this->faker->numberBetween(1, 100),
             "stock_after" => $this->faker->numberBetween(1, 100),
             "created_by_id" => User::query()->get()->random()->id,
-            "transaction_date" => $this->faker->dateTimeBetween(Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()),
+            "transaction_date" => $this->faker->dateTimeBetween(Carbon::now()->startOfYear(), Carbon::now()->endOfYear()),
         ];
     }
 }
