@@ -27,7 +27,7 @@ class Forecasting extends Model
         "product_id", "period", "actual", "prediction", "mad", "mse", "mape",
     ];
 
-    protected function product(): BelongsTo
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Produk::class, "product_id", "id");
     }

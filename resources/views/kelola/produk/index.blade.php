@@ -27,7 +27,6 @@
                                             <th>NAMA PRODUK</th>
                                             <th>JENIS PRODUK</th>
                                             <th>SATUAN</th>
-                                            <th>STOK</th>
                                             <th>HARGA SATUAN</th>
                                             <th>AKSI</th>
                                         </tr>
@@ -41,7 +40,6 @@
                                           <td>{{ $produk->nama_produk }}</td>
                                           <td>{{ $produk->jenis_produk }}</td>
                                           <td>{{ $produk->satuan}}</td>
-                                          <td>{{ $produk->quantity}}</td>
                                           <td>{{ formatToRupiah($produk->harga_satuan) }}</td>
                                           <td>
                                                 <div class="d-flex">

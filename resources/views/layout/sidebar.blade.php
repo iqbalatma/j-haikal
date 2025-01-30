@@ -214,6 +214,14 @@
                     </a>
                 </li>
 
+                <li
+                    class="sidebar-item @if(request()->routeIs("forecasting*")) active @endif ">
+                    <a href="{{route('forecasting.index')}}" class='sidebar-link'>
+                        <i class="bi bi-receipt"></i>
+                        <span>Kelola Peramalan</span>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>
