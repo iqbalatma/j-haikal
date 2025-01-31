@@ -50,6 +50,7 @@ Route::middleware("auth:web")->group(function () {
 
     Route::prefix("forecasting")->name("forecasting.")->controller(ForecastingController::class)->group(function () {
         Route::get("", "index")->name("index");
+        Route::post("", "store")->name("store");
     });
 
     Route::prefix("sales")->name("sales.")->controller(SaleController::class)->group(function () {

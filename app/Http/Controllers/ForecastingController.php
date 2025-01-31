@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produk;
-use App\Models\Transaction;
+use App\Http\Requests\Forecastings\StoreForecastingRequest;
 use App\Services\ForecastingService;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class ForecastingController extends Controller
 {
@@ -19,5 +17,18 @@ class ForecastingController extends Controller
     {
         $response = $service->getAllDataPaginated();
         return response()->view('kelola.forecasting.index', $response);
+    }
+
+    /**
+     * @param ForecastingService $service
+     * @param StoreForecastingRequest $request
+     * @return RedirectResponse
+     */
+    public function store(ForecastingService $service, StoreForecastingRequest $request): RedirectResponse
+    {
+        $response = $service->addNewData($request->validated());
+        if ($this->isError($response)) return $this->getErrorResponse();
+
+        return redirect()->route('forecasting.index')->with("success", "Berhasil melakukan peramalam data");
     }
 }

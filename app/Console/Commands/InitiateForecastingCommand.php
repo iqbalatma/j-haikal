@@ -25,62 +25,12 @@ class InitiateForecastingCommand extends Command
      */
     protected $description = 'Command description';
 
-    private function samplePrediction(): void
-    {
-        $alpha = 0.1;
-        $forecasting = [
-            0 => [
-                "actual" => 9000,
-                "prediction" => 10_000,
-            ],
-            1 => [
-                "actual" => 11_000,
-                "prediction" => 9_900,
-            ],
-            2 => [
-                "actual" => 11_500,
-                "prediction" => 10_010,
-            ],
-            3 => [
-                "actual" => 10_000,
-                "prediction" => 10_159,
-            ],
-            4 => [
-                "actual" => 9_500,
-                "prediction" => 10_143,
-            ],
-            5 => [
-                "actual" => 8_900,
-                "prediction" => 10_079,
-            ],
-            6 => [
-                "actual" => 10_000,
-                "prediction" => 9_961,
-            ],
-            7 => [
-                "actual" => 11_500,
-                "prediction" => 9_965,
-            ],
-        ];
-
-        foreach ($forecasting as $key => $value) {
-            if ($key === 0) {
-                $crosscheckPrediction = $value["prediction"];
-            } else {
-                $crosscheckPrediction = $forecasting[$key - 1]["prediction"] + ($alpha * ($forecasting[$key - 1]["actual"] - $forecasting[$key - 1]["prediction"]));
-            }
-
-            $forecasting[$key]["crosscheck_prediction"] = $crosscheckPrediction;
-        }
-    }
-
     /**
      * Execute the console command.
      */
     public function handle()
     {
         $alpha = 0.1;
-        $this->samplePrediction();
         $products = Produk::query()->select("id")->get();
         foreach ($products as $product) {
             /** @var Produk $product */
@@ -128,9 +78,9 @@ class InitiateForecastingCommand extends Command
                     "product_id" => $product->id,
                     "actual" => $transaction->quantity,
                     "prediction" => round($prediction),
-                    "mse" => round($this->getMSE($months),2),
-                    "mad" => round($this->getMAD($months),2),
-                    "mape" => round($this->getMAPE($months),2),
+                    "mse" => round(getMSE($months),2),
+                    "mad" => round(getMAD($months),2),
+                    "mape" => round(getMAPE($months),2),
                 ];
                 $months[$index] = $forecasting;
 
@@ -144,52 +94,5 @@ class InitiateForecastingCommand extends Command
         }
     }
 
-    public function getMSE(array $data): float|null
-    {
-        if (count($data) === 0) {
-            return null;
-        }
-        $collection = collect($data);
 
-        $total = 0;
-        foreach ($collection as $item){
-            $total += abs($item["actual"] - $item["prediction"]) ** 2;
-        }
-
-        return $total / count($collection);
-    }
-
-    public function getMAD(array $data): float|null
-    {
-        if (count($data) === 0) {
-            return null;
-        }
-
-        $collection = collect($data);
-
-        $total = 0;
-
-        foreach ($collection as $item){
-            $total += abs($item["actual"] - $item["prediction"]);
-        }
-
-        return $total / count($collection);
-    }
-
-    public function getMAPE(array $data): float|null
-    {
-        if (count($data) === 0) {
-            return null;
-        }
-
-        $collection = collect($data);
-
-        $total = 0;
-
-        foreach ($collection as $item){
-            $total += abs(($item["actual"] - $item["prediction"]) / $item["actual"]) * 100;
-        }
-
-        return $total / count($collection);
-    }
 }

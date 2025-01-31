@@ -42,3 +42,64 @@ if (!function_exists("getMonths")) {
         ];
     }
 }
+
+
+if (!function_exists("getMAPE")) {
+    /**
+     * @param array $data
+     * @return float|null
+     */
+    function getMAPE(array $data): float|null
+    {
+        if (count($data) === 0) {
+            return null;
+        }
+
+        $collection = collect($data);
+
+        $total = 0;
+
+        foreach ($collection as $item) {
+            $total += abs(($item["actual"] - $item["prediction"]) / $item["actual"]) * 100;
+        }
+
+        return $total / count($collection);
+    }
+}
+
+if (!function_exists("getMAD")) {
+    function getMAD(array $data): float|null
+    {
+        if (count($data) === 0) {
+            return null;
+        }
+
+        $collection = collect($data);
+
+        $total = 0;
+
+        foreach ($collection as $item) {
+            $total += abs($item["actual"] - $item["prediction"]);
+        }
+
+        return $total / count($collection);
+    }
+}
+
+
+if (!function_exists("getMSE")) {
+    function getMSE(array $data): float|null
+    {
+        if (count($data) === 0) {
+            return null;
+        }
+        $collection = collect($data);
+
+        $total = 0;
+        foreach ($collection as $item) {
+            $total += abs($item["actual"] - $item["prediction"]) ** 2;
+        }
+
+        return $total / count($collection);
+    }
+}

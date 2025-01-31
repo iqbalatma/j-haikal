@@ -3,7 +3,6 @@
 @section('title', 'Halaman Produk')
 @section('content')
     <!-- Basic Tables start -->
-
     <section class="section">
         <div class="row" id="basic-table">
             <div class="col-12 col-md-12">
@@ -68,7 +67,15 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title text-center">Table Peramalam</h4>
+
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            Lakukan Peramalam
+                        </button>
                     </div>
+
 
                     <div class="card-content">
                         <div class="card-body">
@@ -113,4 +120,53 @@
             </div>
         </div>
     </section>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Peramalam</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{route('forecasting.store')}}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="month" class="form-label">Bulan</label>
+                                    <select class="form-control" name="month">
+                                        @foreach(getMonths() as $key => $month)
+                                            <option value="{{$key}}">{{$month}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label for="month" class="form-label">Bulan</label>
+                                    <select class="form-control" name="year">
+                                        @for($i=2024;  $i<2030; $i++)
+                                            <option value="{{$i}}">{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup
+                        </button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 @endsection
