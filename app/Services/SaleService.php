@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\Enums\TransactionType;
+use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;
@@ -48,7 +49,6 @@ class SaleService extends BaseService
                 return $query->where("nama_produk", "LIKE", "%$productName%");
             });
         }
-
 
 
         $transactionSummary = Transaction::query()
@@ -156,6 +156,24 @@ class SaleService extends BaseService
 
             $product->quantity += $requestedData["quantity"];
             $product->save();
+
+            $period = Carbon::now()->format("Y-m");
+
+            $forecasting = Forecasting::query()
+                ->where("product_id", $product->id)
+                ->where("period", $period)
+                ->first();
+
+            $forecastings = Forecasting::query()->where("product_id", $product->id)->get();
+
+            if ($forecasting) {
+                $forecasting->actual += $requestedData["quantity"];
+                $forecasting->mse = round(getMSE($forecastings->toArray()), 2);
+                $forecasting->mad = round(getMAD($forecastings->toArray()), 2);
+                $forecasting->mape = round(getMAPE($forecastings->toArray()), 2);
+                $forecasting->save();
+            }
+
             DB::commit();
             $response = [
                 "success" => true

@@ -9,6 +9,52 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">
+                            Chart
+                        </h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form class="form" data-parsley-validate method="GET"
+                                  action="{{route('forecasting.index')}}">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="kode_produk" class="form-label">Produk</label>
+                                            <select name="product_id" class="form-control">
+                                                @foreach($products as $product)
+                                                    <option value="{{$product->id}}">{{$product->nama_produk}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">
+                                            Filter
+                                        </button>
+                                        <a href="{{route("forecasting.index")}}"
+                                           type="reset"
+                                           class="btn btn-light-secondary me-1 mb-1"
+                                        >
+                                            Reset
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    {{--                                    <div class="col-12 d-flex justify-content-center p-5" style="height: 600px">--}}
+                                    <canvas id="forecasting"></canvas>
+                                    {{--                                    </div>--}}
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
                             Filter
                         </h4>
                     </div>
@@ -168,5 +214,100 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const forecasting_labels = @json($forecastingByProduct["labels"] ?? []);
+        const forecasting_predictions = @json($forecastingByProduct["predictions"] ?? []);
+        const forecasting_actual = @json($forecastingByProduct["actual"] ?? []);
+        const forecasting_mape = @json($forecastingByProduct["mape"] ?? []);
+
+        const dataForecasting = {
+            labels: forecasting_labels,
+            datasets: [
+                {
+                    label: 'Data Actual',
+                    data: forecasting_predictions,
+                    borderColor: "#FF6347",
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                },
+                {
+                    label: 'Data Prediksi',
+                    data: forecasting_actual,
+                    borderColor: "#1E90FF",
+                    tension: 0.4
+                },
+                {
+                    label: 'Data MAPE',
+                    data: forecasting_mape,
+                    borderColor: "green",
+                    tension: 0.4,
+                    yAxisID: 'y1',
+                },
+            ]
+        };
+        const ctxForecasting = document.getElementById('forecasting');
+
+        new Chart(ctxForecasting, {
+            type: 'line',
+            data: dataForecasting,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Peramalam Berdasarkan Produk'
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            align: 'center',
+                            text: 'Periode',
+                            font: {
+                                family: 'Arial',
+                                size: 14,
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            align: 'center',
+                            text: 'Kuantitas',
+                            font: {
+                                family: 'Arial',
+                                size: 14,
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+
+                        // grid line settings
+                        grid: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                    },
+                }
+            },
+        });
+    </script>
 
 @endsection

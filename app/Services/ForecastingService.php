@@ -36,8 +36,24 @@ class ForecastingService extends BaseService
                 $query->where("kode_produk", $productCode);
             });
         }
+
+        $forecastingByProduct = null;
+        if ($productId = request()->input("product_id")) {
+            $forecastingByProduct = Forecasting::query()
+                ->where("product_id", $productId)
+                ->orderBy("period", "ASC")
+                ->get();
+            $forecastingByProduct = [
+                "labels" => $forecastingByProduct->pluck("period")->toArray(),
+                "predictions" => $forecastingByProduct->pluck("prediction")->toArray(),
+                "actual" => $forecastingByProduct->pluck("actual")->toArray(),
+                "mape" => $forecastingByProduct->pluck("mape")->toArray(),
+            ];
+        }
         return [
+            "products" => Produk::query()->get(),
             "forecastings" => $query->paginate(25),
+            "forecastingByProduct" => $forecastingByProduct
         ];
     }
 
@@ -81,6 +97,7 @@ class ForecastingService extends BaseService
                 $forecasting = [
                     "period" => $now->format("Y-m"),
                     "product_id" => $product->id,
+                    "actual" => $currentTransactions->quantity,
                     "prediction" => round($prediction),
                     "mse" => round(getMSE($forecastingByProduct->toArray()), 2),
                     "mad" => round(getMAD($forecastingByProduct->toArray()), 2),
