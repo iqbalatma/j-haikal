@@ -7,7 +7,6 @@ use App\Http\Requests\Users\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Iqbalatma\LaravelServiceRepo\Exceptions\EmptyDataException;
 
 class UserController extends Controller
 {
@@ -70,5 +69,18 @@ class UserController extends Controller
         if ($this->isError($response)) return $this->getErrorResponse();
 
         return redirect()->route('users.index')->with("success", "Berhasil memperbaharui data user");
+    }
+
+    /**
+     * @param UserService $service
+     * @param string $id
+     * @return RedirectResponse
+     */
+    public function destroy(UserService $service, string $id):RedirectResponse
+    {
+        $response = $service->deleteDataById($id);
+        if ($this->isError($response)) return $this->getErrorResponse();
+
+        return redirect()->route('users.index')->with("success", "Berhasil menghapus data user");
     }
 }

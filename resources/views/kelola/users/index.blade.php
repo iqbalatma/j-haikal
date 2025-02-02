@@ -43,10 +43,10 @@
                                                         class="btn btn-success show_confirm"
                                                         style="margin-right: 5px">Edit</a>
 
-                                                    <form action="{{ route('produk.destroy', $user->id) }}"
+                                                    <form action="{{ route('users.destroy', $user->id) }}"
                                                         method="POST">
                                                         @csrf
-                                                        @method('delete')
+                                                        @method('DELETE')
                                                         <button class="btn btn-danger"> Hapus </button>
                                                     </form>
                                                 </div>

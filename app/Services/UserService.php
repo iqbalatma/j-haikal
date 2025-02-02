@@ -99,4 +99,29 @@ class UserService extends BaseService
         }
         return $response;
     }
+
+    /**
+     * @param string|int $id
+     * @return array|true[]
+     */
+    public function deleteDataById(string|int $id): array
+    {
+        try {
+            $this->checkData($id);
+
+            $this->getServiceEntity()->delete();
+            $response = [
+                "success" => true,
+            ];
+        } catch (EmptyDataException $e) {
+            $response = [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+        } catch (Exception $e) {
+            $response = getDefaultErrorResponse($e);
+
+        }
+        return $response;
+    }
 }

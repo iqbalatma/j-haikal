@@ -40,6 +40,7 @@ Route::middleware("auth:web")->group(function () {
         Route::post("", "store")->name("store");
         Route::get("{id}/edit", "edit")->name("edit");
         Route::patch("{id}", "update")->name("update");
+        Route::delete("{id}", "destroy")->name("destroy");
     });
     Route::middleware("permission:" . Role::KEPALA_GUDANG->name)->group(function () {
         Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
