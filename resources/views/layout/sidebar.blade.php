@@ -177,6 +177,15 @@
 
                 <li
                     class="sidebar-item @if(request()->routeIs("produk*")) active @endif ">
+                    <a href="{{route('users.index')}}" class='sidebar-link'>
+                        <i class="bi bi-people-fill"></i>
+                        <span>Kelola User</span>
+                    </a>
+                </li>
+
+
+                <li
+                    class="sidebar-item @if(request()->routeIs("produk*")) active @endif ">
                     <a href="{{route('produk.index')}}" class='sidebar-link'>
                         <i class="bi bi-box"></i>
                         <span>Kelola Produk</span>

@@ -8,6 +8,7 @@ use App\Http\Controllers\RestockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("guest")->group(function () {
@@ -33,6 +34,13 @@ Route::middleware("auth:web")->group(function () {
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::prefix("users")->name("users.")->controller(UserController::class)->middleware("permission:".Role::ADMINISTRATOR->name)->group(function () {
+        Route::get("", "index")->name("index");
+        Route::get("create", "create")->name("create");
+        Route::post("", "store")->name("store");
+        Route::get("{id}/edit", "edit")->name("edit");
+        Route::patch("{id}", "update")->name("update");
+    });
     Route::middleware("permission:" . Role::KEPALA_GUDANG->name)->group(function () {
         Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
         Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
