@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string id
  * @property string product_id
  * @property string period
- * @property string actual
- * @property string prediction
+ * @property integer actual
+ * @property integer prediction
+ * @property integer safety_stock
+ * @property integer purchasing_plan
  * @property string mad
  * @property string mse
  * @property string mape
@@ -22,9 +24,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Forecasting extends Model
 {
     use HasUuids;
+
     protected $table = 'forecasting';
     protected $fillable = [
-        "product_id", "period", "actual", "prediction", "mad", "mse", "mape",
+        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape",
     ];
 
     public function product(): BelongsTo

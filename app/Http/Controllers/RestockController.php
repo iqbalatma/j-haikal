@@ -33,11 +33,11 @@ class RestockController extends Controller
     }
 
     /**
-     * @param SaleService $service
+     * @param RestockService $service
      * @param StoreRestockReqest $request
      * @return RedirectResponse
      */
-    public function store(SaleService $service, StoreRestockReqest $request): RedirectResponse
+    public function store(RestockService $service, StoreRestockReqest $request): RedirectResponse
     {
         $response = $service->addNewData($request->validated());
         if ($this->isError($response)) return $this->getErrorResponse();

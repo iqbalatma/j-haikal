@@ -5,7 +5,6 @@ use App\Enums\Enums\TransactionType;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;
-use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -61,26 +60,19 @@ class RestockService extends BaseService
                     "message" => "Produk tidak ditemukan"
                 ];
             }
-            if ($product?->quantity < $requestedData["quantity"]) {
-                DB::rollBack();
-                return [
-                    "success" => false,
-                    "message" => "Kuantitas produk tidak cukup"
-                ];
-            }
 
             Transaction::query()->create([
                 "product_id" => $requestedData["product_id"],
                 "supplier_id" => $requestedData["supplier_id"],
                 "quantity" => $requestedData["quantity"],
-                "type" => TransactionType::SALE->name,
+                "type" => TransactionType::RESTOCK->name,
                 "created_by_id" => Auth::id(),
                 "transaction_date" => Carbon::now(),
                 "stock_before" => $product?->quantity,
-                "stock_after" => $product?->quantity - $requestedData["quantity"],
+                "stock_after" => $product?->quantity + $requestedData["quantity"],
             ]);
 
-            $product->quantity -= $requestedData["quantity"];
+            $product->quantity += $requestedData["quantity"];
             $product->save();
             DB::commit();
             $response = [

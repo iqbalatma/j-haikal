@@ -136,8 +136,8 @@
                                         <th>PERIODE</th>
                                         <th>PEMBELIAN</th>
                                         <th>PREDIKSI</th>
-                                        <th>MAD</th>
-                                        <th>MSE</th>
+                                        <th>STOK AMAN</th>
+                                        <th>RENCANA PEMBELIAN</th>
                                         <th>MAPE</th>
                                     </tr>
                                     </thead>
@@ -151,8 +151,8 @@
                                             <td>{{ $forecasting->period }}</td>
                                             <td>{{ $forecasting->actual }}</td>
                                             <td>{{ $forecasting->prediction }}</td>
-                                            <td>{{ $forecasting->mad }}</td>
-                                            <td>{{ $forecasting->mse }}</td>
+                                            <td>{{ $forecasting->safety_stock }}</td>
+                                            <td>{{ $forecasting->purchasing_plan }}</td>
                                             <td>{{ $forecasting->mape }}</td>
                                         </tr>
                                     @endforeach

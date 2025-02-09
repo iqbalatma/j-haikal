@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("period");
             $table->decimal("actual")->nullable();
             $table->decimal("prediction")->nullable();
+            $table->decimal("safety_stock")->nullable();
+            $table->decimal("purchasing_plan")->nullable();
             $table->decimal("mad")->nullable();
             $table->decimal("mse")->nullable();
             $table->decimal("mape")->nullable();

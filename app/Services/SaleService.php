@@ -134,7 +134,6 @@ class SaleService extends BaseService
         try {
             DB::beginTransaction();
             $product = Produk::query()->findOrFail($requestedData["product_id"]);
-
             if (!$product) {
                 DB::rollBack();
                 return [
@@ -142,19 +141,25 @@ class SaleService extends BaseService
                     "message" => "Produk tidak ditemukan"
                 ];
             }
-
+            if ($product?->quantity < $requestedData["quantity"]) {
+                DB::rollBack();
+                return [
+                    "success" => false,
+                    "message" => "Kuantitas produk tidak cukup"
+                ];
+            }
             Transaction::query()->create([
                 "product_id" => $requestedData["product_id"],
                 "supplier_id" => $requestedData["supplier_id"],
                 "quantity" => $requestedData["quantity"],
-                "type" => TransactionType::RESTOCK->name,
+                "type" => TransactionType::SALE->name,
                 "created_by_id" => Auth::id(),
                 "transaction_date" => Carbon::now(),
                 "stock_before" => $product?->quantity,
-                "stock_after" => $product?->quantity + $requestedData["quantity"],
+                "stock_after" => $product?->quantity - $requestedData["quantity"],
             ]);
 
-            $product->quantity += $requestedData["quantity"];
+            $product->quantity -= $requestedData["quantity"];
             $product->save();
 
             $period = Carbon::now()->format("Y-m");
