@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-
+use Illuminate\Support\Facades\Gate;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -32,5 +33,16 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrap();
 
+        Gate::define('KEPALA_TOKO', function (User $user) {
+            return $user->role === Role::KEPALA_TOKO->name;
+        });
+
+        Gate::define('KEPALA_GUDANG', function (User $user) {
+            return $user->role === Role::KEPALA_GUDANG->name;
+        });
+
+        Gate::define('ADMINISTRATOR', function (User $user) {
+            return $user->role === Role::ADMINISTRATOR->name;
+        });
     }
 }

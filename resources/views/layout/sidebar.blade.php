@@ -167,70 +167,81 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-                <li
-                    class="sidebar-item  ">
-                    <a href="{{route('dashboard')}}" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Beranda</span>
-                    </a>
-                </li>
+{{--                <li--}}
+{{--                    class="sidebar-item  ">--}}
+{{--                    <a href="{{route('dashboard')}}" class='sidebar-link'>--}}
+{{--                        <i class="bi bi-grid-fill"></i>--}}
+{{--                        <span>Beranda</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("produk*")) active @endif ">
-                    <a href="{{route('users.index')}}" class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
-                        <span>Kelola User</span>
-                    </a>
-                </li>
+                @can("ADMINISTRATOR")
+                    <li
+                        class="sidebar-item @if(request()->routeIs("users*")) active @endif ">
+                        <a href="{{route('users.index')}}" class='sidebar-link'>
+                            <i class="bi bi-people-fill"></i>
+                            <span>Kelola User</span>
+                        </a>
+                    </li>
+                @endcan
 
+                @can("KEPALA_GUDANG")
+                    <li
+                        class="sidebar-item @if(request()->routeIs("produk*")) active @endif ">
+                        <a href="{{route('produk.index')}}" class='sidebar-link'>
+                            <i class="bi bi-box"></i>
+                            <span>Kelola Produk</span>
+                        </a>
+                    </li>
+                @endcan
+                @can("KEPALA_TOKO")
+                    <li
+                        class="sidebar-item @if(request()->routeIs("suplier*")) active @endif ">
+                        <a href="{{route('suplier.index')}}" class='sidebar-link'>
+                            <i class="bi bi-truck"></i>
+                            <span>Kelola Suplier</span>
+                        </a>
+                    </li>
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("produk*")) active @endif ">
-                    <a href="{{route('produk.index')}}" class='sidebar-link'>
-                        <i class="bi bi-box"></i>
-                        <span>Kelola Produk</span>
-                    </a>
-                </li>
+                    <li
+                        class="sidebar-item @if(request()->routeIs("transactions*")) active @endif ">
+                        <a href="{{route('transactions.index')}}" class='sidebar-link'>
+                            <i class="bi bi-grid-fill"></i>
+                            <span>History Transaksi</span>
+                        </a>
+                    </li>
+                @endcan
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("suplier*")) active @endif ">
-                    <a href="{{route('suplier.index')}}" class='sidebar-link'>
-                        <i class="bi bi-truck"></i>
-                        <span>Kelola Suplier</span>
-                    </a>
-                </li>
+                @canany(["KEPALA_TOKO", "KEPALA_GUDANG"])
+                    <li
+                        class="sidebar-item @if(request()->routeIs("restocks*")) active @endif ">
+                        <a href="{{route('restocks.index')}}" class='sidebar-link'>
+                            <i class="bi bi-boxes"></i>
+                            <span>Kelola Stok</span>
+                        </a>
+                    </li>
+                @endcanany
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("transactions*")) active @endif ">
-                    <a href="{{route('transactions.index')}}" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>History Transaksi</span>
-                    </a>
-                </li>
+                @can("KEPALA_GUDANG")
+                    <li
+                        class="sidebar-item @if(request()->routeIs("sales*")) active @endif ">
+                        <a href="{{route('sales.index')}}" class='sidebar-link'>
+                            <i class="bi bi-receipt"></i>
+                            <span>Kelola Penjualan</span>
+                        </a>
+                    </li>
+                @endcan
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("restocks*")) active @endif ">
-                    <a href="{{route('restocks.index')}}" class='sidebar-link'>
-                        <i class="bi bi-boxes"></i>
-                        <span>Kelola Stok</span>
-                    </a>
-                </li>
+                @can("KEPALA_TOKO")
+                    <li
+                        class="sidebar-item @if(request()->routeIs("forecasting*")) active @endif ">
+                        <a href="{{route('forecasting.index')}}" class='sidebar-link'>
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span>Kelola Peramalan</span>
+                        </a>
+                    </li>
+                @endcan
 
-                <li
-                    class="sidebar-item @if(request()->routeIs("sales*")) active @endif ">
-                    <a href="{{route('sales.index')}}" class='sidebar-link'>
-                        <i class="bi bi-receipt"></i>
-                        <span>Kelola Penjualan</span>
-                    </a>
-                </li>
-
-                <li
-                    class="sidebar-item @if(request()->routeIs("forecasting*")) active @endif ">
-                    <a href="{{route('forecasting.index')}}" class='sidebar-link'>
-                        <i class="bi bi-receipt"></i>
-                        <span>Kelola Peramalan</span>
-                    </a>
-                </li>
 
             </ul>
         </div>

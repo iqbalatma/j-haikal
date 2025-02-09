@@ -134,10 +134,11 @@
                                         <th>KODE PRODUK</th>
                                         <th>NAMA PRODUK</th>
                                         <th>PERIODE</th>
-                                        <th>PEMBELIAN</th>
+                                        <th>PENJUALAN</th>
                                         <th>PREDIKSI</th>
                                         <th>STOK AMAN</th>
                                         <th>RENCANA PEMBELIAN</th>
+                                        <th>AKTUALISASI PEMBELIAN</th>
                                         <th>MAPE</th>
                                     </tr>
                                     </thead>
@@ -149,10 +150,11 @@
                                             <td>{{ $forecasting->product?->kode_produk }}</td>
                                             <td>{{ $forecasting->product?->nama_produk }}</td>
                                             <td>{{ $forecasting->period }}</td>
-                                            <td>{{ $forecasting->actual }}</td>
+                                            <td>{{ $forecasting->actual ?? "-" }}</td>
                                             <td>{{ $forecasting->prediction }}</td>
                                             <td>{{ $forecasting->safety_stock }}</td>
                                             <td>{{ $forecasting->purchasing_plan }}</td>
+                                            <td>{{ $forecasting->actual_restock ?? "-" }}</td>
                                             <td>{{ $forecasting->mape }}</td>
                                         </tr>
                                     @endforeach
@@ -194,9 +196,9 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="month" class="form-label">Bulan</label>
+                                    <label for="month" class="form-label">Tahun</label>
                                     <select class="form-control" name="year">
-                                        @for($i=2024;  $i<2030; $i++)
+                                        @for($i=2025;  $i<2030; $i++)
                                             <option value="{{$i}}">{{$i}}</option>
                                         @endfor
                                     </select>

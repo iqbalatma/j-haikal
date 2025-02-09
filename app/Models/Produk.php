@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer id
+ * @property integer quantity
  */
 class Produk extends Model
 {

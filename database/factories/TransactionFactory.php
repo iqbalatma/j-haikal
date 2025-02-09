@@ -24,7 +24,7 @@ class TransactionFactory extends Factory
         return [
             "product_id" => Produk::query()->get()->random()->id,
             "supplier_id" => Suplier::query()->get()->random()->id,
-            "type" => $this->faker->randomElement(TransactionType::names()),
+            "type" => TransactionType::SALE->name,
             "quantity" => $this->faker->numberBetween(1, 100),
             "stock_before" => $this->faker->numberBetween(1, 100),
             "stock_after" => $this->faker->numberBetween(1, 100),

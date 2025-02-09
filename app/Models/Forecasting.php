@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string product_id
  * @property string period
  * @property integer actual
+ * @property integer actual_restock
  * @property integer prediction
  * @property integer safety_stock
  * @property integer purchasing_plan
@@ -27,7 +28,7 @@ class Forecasting extends Model
 
     protected $table = 'forecasting';
     protected $fillable = [
-        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape",
+        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape", "actual_restock"
     ];
 
     public function product(): BelongsTo

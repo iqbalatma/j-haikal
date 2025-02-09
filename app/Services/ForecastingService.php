@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\Enums\TransactionType;
 use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Transaction;
@@ -12,6 +13,7 @@ use Iqbalatma\LaravelServiceRepo\BaseService;
 
 class ForecastingService extends BaseService
 {
+    public const LEAD_TIME = 5;
     protected $repository;
     protected float $alpha;
 
@@ -64,7 +66,7 @@ class ForecastingService extends BaseService
     public function addNewData(array $requestedData): array
     {
         try {
-            $products = Produk::query()->select("id")->get();
+            $products = Produk::query()->select("id", "quantity")->get();
             $now = Carbon::createFromFormat("Y-m", $requestedData["year"] . "-" . $requestedData["month"])?->startOfMonth();
             $previous = Carbon::createFromFormat("Y-m", $requestedData["year"] . "-" . $requestedData["month"])?->startOfMonth()->subMonth();
             foreach ($products as $product) {
@@ -79,6 +81,7 @@ class ForecastingService extends BaseService
                         DB::raw("SUM(quantity) as quantity"),
                     ])
                     ->where("product_id", $product->id)
+                    ->where('type', TransactionType::SALE->name)
                     ->whereMonth("transaction_date", $now->format("m"))
                     ->whereYear("transaction_date", $now->format("Y"))
                     ->first();
@@ -94,16 +97,37 @@ class ForecastingService extends BaseService
                     ->whereNot("period", $now->format("Y-m"))
                     ->get();
 
+                $initiateRange = $now->copy()->subMonths(12);
+                $lastRange = $now->copy()->subMonths(1);
+                $transactions = Transaction::query()
+                    ->select([
+                        DB::raw("SUM(quantity) as quantity"),
+                        DB::raw('YEAR(transaction_date) as year'),
+                        DB::raw('MONTH(transaction_date) as month'),
+                    ])
+                    ->where("product_id", $product->id)
+                    ->where('type', TransactionType::SALE->name)
+                    ->whereBetween('transaction_date', [
+                        $initiateRange->startOfMonth()->toDateString(),
+                        $lastRange->endOfMonth()->toDateString(),
+                    ])
+                    ->groupBy(DB::raw('YEAR(transaction_date), MONTH(transaction_date)'))
+                    ->orderBy(DB::raw('YEAR(transaction_date), MONTH(transaction_date)'))
+                    ->get();
+
+                $safetyStock = round(getSafetyStock($transactions), 0);
                 $forecasting = [
                     "period" => $now->format("Y-m"),
                     "product_id" => $product->id,
                     "actual" => $currentTransactions->quantity,
-                    "prediction" => round($prediction),
+                    "actual_restock" => null,
+                    "prediction" => round($prediction, 0),
+                    "safety_stock" => $safetyStock,
+                    "purchasing_plan" => round(round($prediction, 0) + $safetyStock - $product->quantity, 2),
                     "mse" => round(getMSE($forecastingByProduct->toArray()), 2),
                     "mad" => round(getMAD($forecastingByProduct->toArray()), 2),
                     "mape" => round(getMAPE($forecastingByProduct->toArray()), 2),
                 ];
-
 
                 Forecasting::query()
                     ->updateOrCreate(

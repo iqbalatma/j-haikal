@@ -1,5 +1,8 @@
 <?php
 
+use App\Services\ForecastingService;
+use Illuminate\Support\Collection;
+
 if (!function_exists("formatToRupiah")) {
     /**
      * Description : use to format to rupiah
@@ -101,5 +104,23 @@ if (!function_exists("getMSE")) {
         }
 
         return $total / count($collection);
+    }
+}
+
+if (!function_exists("getSafetyStock")) {
+    function getSafetyStock(array|Collection $data): int|null
+    {
+        if (count($data) === 0) {
+            return null;
+        }
+        $collection = collect($data);
+
+
+        $max = $collection->max("quantity") / $collection->count();
+        $avg = $collection->avg("quantity") / $collection->count();
+
+        $safetyStock = ($max - $avg) * ForecastingService::LEAD_TIME;
+
+        return round($safetyStock, 0);
     }
 }
