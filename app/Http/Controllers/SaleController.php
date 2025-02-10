@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Sales\StoreSalesRequest;
+use App\Http\Requests\Sales\StoreSaleRequest;
 use App\Services\SaleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,10 +32,10 @@ class SaleController extends Controller
 
     /**
      * @param SaleService $service
-     * @param StoreSalesRequest $request
+     * @param StoreSaleRequest $request
      * @return RedirectResponse
      */
-    public function store(SaleService $service, StoreSalesRequest $request): RedirectResponse
+    public function store(SaleService $service, StoreSaleRequest $request): RedirectResponse
     {
         $response = $service->addNewData($request->validated());
         if ($this->isError($response)) return $this->getErrorResponse();

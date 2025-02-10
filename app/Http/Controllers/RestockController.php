@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Restocks\StoreRestockReqest;
-use App\Http\Requests\Sales\StoreSalesRequest;
 use App\Services\RestockService;
-use App\Services\SaleService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RestockController extends Controller

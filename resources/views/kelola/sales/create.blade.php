@@ -29,25 +29,8 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="first-name-horizontal">Supplier</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <select class="form-control @error('supplier_id') is invalid @enderror" name="supplier_id">
-                                        <option value>Silahkan pilih supplier</option>
-                                        @foreach($suppliers as $supplier)
-                                            <option value="{{$supplier->id}}">{{$supplier->nama_suplier}} | {{$supplier->alamat}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('supplier_id')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-4">
                                     <label for="first-name-horizontal">Kuantitas</label>
                                 </div>
-
-
                                 <div class="col-md-8 form-group">
                                     <input type="text" id="quantity" name="quantity"
                                            class="form-control @error('quantity') is invalid @enderror"

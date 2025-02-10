@@ -150,7 +150,6 @@ class SaleService extends BaseService
             }
             Transaction::query()->create([
                 "product_id" => $requestedData["product_id"],
-                "supplier_id" => $requestedData["supplier_id"],
                 "quantity" => $requestedData["quantity"],
                 "type" => TransactionType::SALE->name,
                 "created_by_id" => Auth::id(),

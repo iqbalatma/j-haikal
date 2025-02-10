@@ -5,7 +5,7 @@ namespace App\Http\Requests\Sales;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreSalesRequest extends FormRequest
+class StoreSaleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class StoreSalesRequest extends FormRequest
     {
         return [
             "product_id" => ["required", Rule::exists("produks", "id")],
-            "supplier_id" => ["required", Rule::exists("supliers", "id")],
             "quantity" => ["required", "numeric", "min:1"],
         ];
     }
