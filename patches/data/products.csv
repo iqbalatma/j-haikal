@@ -54,13 +54,3 @@ NO;KODE PRODUK;NAMA;JENIS PRODUK;SATUAN;HPP;HARGA SATUAN
 53;SUL;SUMPIA UDANG JAYA LAKSANA ;Asin;BALL 2 KG;Rp80.000;Rp110.000
 54;TGW;TELOR GABUS WIJEN ;Asin;BALL 2 KG;Rp60.000;Rp85.000
 55;TGT;TELOR GABUS TJ;Asin;BALL 1 KG;Rp25.000;Rp35.000
-
-
-
-/** ========
-
-code_product;supplier;quantity;type;period
-TGT;Bumi Sari Cianjur;10;in;2024-01
-TGT;Bumi Sari Cianjur;10;out;2024-01
-SBM;Bumi Sari Cianjur;12;out;2024-01
-MCM;Bumi Sari Cianjur;12;in;2024-02
