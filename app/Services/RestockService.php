@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Services;
-use App\Enums\Enums\TransactionType;
+use App\Enums\TransactionType;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;

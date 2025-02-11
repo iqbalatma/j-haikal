@@ -1,4 +1,4 @@
-@php use App\Enums\Enums\Type;use App\Enums\Unit; @endphp
+@php use App\Enums\Type;use App\Enums\Unit; @endphp
 @extends('kerangka.master')
 @section('title', 'Halaman Tambah Produk')
 @section('content')
@@ -55,7 +55,7 @@
                                 <div class="col-md-8 form-group">
                                     <select class="form-control" name="satuan">
                                         <option value>Silahkan pilih satuan</option>
-                                        @foreach(Unit::names() as $unit)
+                                        @foreach(Unit::values() as $unit)
                                             <option value="{{$unit}}">{{$unit}}</option>
                                         @endforeach
                                     </select>

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Enums\Enums\TransactionType;
+use App\Enums\TransactionType;
 use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Transaction;

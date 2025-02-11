@@ -124,3 +124,17 @@ if (!function_exists("getSafetyStock")) {
         return round($safetyStock, 0);
     }
 }
+
+
+
+if (!function_exists('getTrimmedOrNull')) {
+
+    /**
+     * @param string $value
+     * @return string|null
+     */
+    function getTrimmedOrNull(string $value): string|null
+    {
+        return trim($value) === "" ? null : $value;
+    }
+}

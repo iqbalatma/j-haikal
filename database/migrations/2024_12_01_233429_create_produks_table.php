@@ -14,10 +14,11 @@ return new class extends Migration
     {
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_produk')->unique();
+            $table->string('kode_produk');
             $table->string('nama_produk');
             $table->string('jenis_produk');
             $table->string('satuan');
+            $table->bigInteger('hpp');
             $table->bigInteger('harga_satuan');
             $table->bigInteger('quantity');
             $table->timestamps();

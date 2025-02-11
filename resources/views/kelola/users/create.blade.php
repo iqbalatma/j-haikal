@@ -1,4 +1,4 @@
-@php use App\Enums\Enums\Type;use App\Enums\Role;use App\Enums\Unit; @endphp
+@php use App\Enums\Role; @endphp
 @extends('kerangka.master')
 @section('title', 'Halaman Tambah Produk')
 @section('content')

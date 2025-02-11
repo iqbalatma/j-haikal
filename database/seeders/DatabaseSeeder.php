@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            ProdukSeeder::class,
-            SuplierSeeder::class,
-            TransactionSeeder::class
+//            ProdukSeeder::class,
+//            SuplierSeeder::class,
+//            TransactionSeeder::class
         ]);
     }
 }
