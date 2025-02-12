@@ -135,6 +135,6 @@ if (!function_exists('getTrimmedOrNull')) {
      */
     function getTrimmedOrNull(string $value): string|null
     {
-        return trim($value) === "" ? null : $value;
+        return trim($value) === "" ? null : trim($value);
     }
 }

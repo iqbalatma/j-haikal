@@ -103,7 +103,7 @@ class InitiateForecastingCommand extends Command
                     "period" => $period,
                     "product_id" => $product->id,
                     "actual" => $currentTransactions->quantity,
-                    "actual_restock" => 0,
+                    "actual_restock" => null,
                     "prediction" => round($prediction, 0),
                     "safety_stock" => $safetyStock,
                     "purchasing_plan" => round(round($prediction, 0) + $safetyStock - $product->quantity, 0),

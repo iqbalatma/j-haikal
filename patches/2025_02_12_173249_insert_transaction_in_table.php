@@ -8,8 +8,7 @@ use Carbon\Carbon;
 use Dentro\Patcher\Patch;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Patch
-{
+return new class extends Patch {
     /**
      * Run patch script.
      *
@@ -20,9 +19,9 @@ return new class extends Patch
         $command = $this->command;
         $command->info("START INSERTING DATA TRANSACTIONS");
 
-        if ($file = fopen(__DIR__ . "/data/transaction_in.csv", 'rb')) {
+        if ($file = fopen(__DIR__ . "/data/transactions_in.csv", 'rb')) {
             $command->info("=========================\n");
-            $totalLines = count(file(__DIR__ . "/data/transaction_in.csv"));
+            $totalLines = count(file(__DIR__ . "/data/transactions_in.csv"));
             $command->withProgressBar($totalLines - 1, function ($bar) use ($file, $command) {
                 $count = 1;
                 $now = \Carbon\Carbon::now();
@@ -39,7 +38,7 @@ return new class extends Patch
                         continue;
                     }
 
-                    $supplier = Suplier::query()->where("nama_suplier",getTrimmedOrNull($row[10]))->first();
+                    $supplier = Suplier::query()->where("nama_suplier", getTrimmedOrNull($row[10]))->first();
 
                     if (!$supplier) {
                         $command->warn("Supplier " . getTrimmedOrNull($row[10]) . " not found");
@@ -48,6 +47,7 @@ return new class extends Patch
                     }
 
                     $product->quantity += getTrimmedOrNull($row[7]);
+                    $product->save();
                     $period = Carbon::createFromFormat("Y-m", getTrimmedOrNull($row[6]))?->startOfMonth();
                     Transaction::query()->create([
                         "product_id" => $product->id,

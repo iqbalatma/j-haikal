@@ -38,6 +38,8 @@ return new class extends Patch {
                     }
 
                     $product->quantity -= getTrimmedOrNull($row[7]);
+                    $product->save();
+
                     $period = Carbon::createFromFormat("Y-m", getTrimmedOrNull($row[6]))?->startOfMonth();
                     Transaction::query()->create([
                         "product_id" => $product->id,

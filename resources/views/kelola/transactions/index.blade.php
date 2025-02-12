@@ -61,7 +61,7 @@
                                             <label for="year" class="form-label">Tahun</label>
                                             <select class="form-control" name="year">
                                                 <option>Silahkan pilih tahun</option>
-                                                @for($i = 2024;  $i<2030;$i++)
+                                                @for($i = 2023;  $i<2030;$i++)
                                                     <option value="{{$i}}" @if(request()->input('year') == $i) selected @endif>{{$i}}</option>
                                                 @endfor
                                             </select>

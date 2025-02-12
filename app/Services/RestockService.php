@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Enums\TransactionType;
+use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;
@@ -26,8 +27,13 @@ class RestockService extends BaseService
      */
     public function getAllDataPaginated(): array
     {
+        $forecastings = collect();
+        if ($period = request()->input("period")){
+            $forecastings = Forecasting::query()->with("product")->where("period", $period)->whereNull("actual_restock")->paginate();
+        }
         return [
             "title" => "Restok",
+            "forecastings" => $forecastings,
             "products" => Produk::query()->get()
         ];
     }

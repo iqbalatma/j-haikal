@@ -16,7 +16,7 @@ class RestockController extends Controller
     public function index(RestockService $service): Response
     {
         viewShare($service->getAllDataPaginated());
-        return response()->view("kelola.restocks.index");
+        return response()->view("kelola.restocks.restock-plan");
     }
 
     /**

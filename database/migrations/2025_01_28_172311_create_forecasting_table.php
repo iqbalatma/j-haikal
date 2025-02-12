@@ -15,11 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->unsignedBigInteger("product_id");
             $table->string("period");
-            $table->integer("actual")->nullable();
-            $table->integer("actual_restock")->nullable();
+            $table->integer("actual")->nullable()->comment("This is data of actual sales");
+            $table->integer("actual_restock")->nullable()->comment("This is data of actual restock that will increase data in table product");
             $table->integer("prediction")->nullable();
             $table->integer("safety_stock")->nullable();
-            $table->integer("purchasing_plan")->nullable();
+            $table->integer("purchasing_plan")->nullable()->comment("this is final data that will be use as reference to restock");
             $table->decimal("mad", 14,2)->nullable();
             $table->decimal("mse", 14,2)->nullable();
             $table->decimal("mape")->nullable();
