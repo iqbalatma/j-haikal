@@ -81,6 +81,7 @@ Route::middleware("auth:web")->group(function () {
             Route::get("", "index")->name("index");
             Route::get("create", "create")->name("create");
             Route::post("", "store")->name("store");
+            Route::post("restock-forecasting", "storeByForecasting")->name("store.by.forecasting");
         });
     });
 });
