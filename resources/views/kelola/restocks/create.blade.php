@@ -1,4 +1,4 @@
-@php use App\Enums\Enums\Type;use App\Enums\Unit; @endphp
+@php @endphp
 @extends('kerangka.master')
 @section('title', 'Halaman Tambah Produk')
 @section('content')
@@ -17,10 +17,13 @@
                                     <label for="first-name-horizontal">Produk</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="form-control @error('product_id') is invalid @enderror" name="product_id">
+                                    <select class="form-control @error('product_id') is invalid @enderror"
+                                            name="product_id">
                                         <option value>Silahkan pilih produk</option>
                                         @foreach($products as $product)
-                                            <option value="{{$product->id}}">{{$product->kode_produk}} | {{$product->nama_produk}} | {{$product->jenis_produk}} | Quantity : {{$product->quantity}}</option>
+                                            <option value="{{$product->id}}">{{$product->kode_produk}}
+                                                | {{$product->nama_produk}} | {{$product->jenis_produk}} | Quantity
+                                                : {{$product->quantity}}</option>
                                         @endforeach
                                     </select>
                                     @error('product_id')
@@ -32,10 +35,12 @@
                                     <label for="first-name-horizontal">Supplier</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="form-control @error('supplier_id') is invalid @enderror" name="supplier_id">
+                                    <select class="form-control @error('supplier_id') is invalid @enderror"
+                                            name="supplier_id">
                                         <option value>Silahkan pilih supplier</option>
                                         @foreach($suppliers as $supplier)
-                                            <option value="{{$supplier->id}}">{{$supplier->nama_suplier}} | {{$supplier->alamat}}</option>
+                                            <option value="{{$supplier->id}}">{{$supplier->nama_suplier}}
+                                                | {{$supplier->alamat}}</option>
                                         @endforeach
                                     </select>
                                     @error('supplier_id')

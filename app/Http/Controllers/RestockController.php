@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Restocks\StoreRestockByForecastingRequest;
 use App\Http\Requests\Restocks\StoreRestockReqest;
 use App\Services\RestockService;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ class RestockController extends Controller
     public function index(RestockService $service): Response
     {
         viewShare($service->getAllDataPaginated());
-        return response()->view("kelola.restocks.index");
+        return response()->view("kelola.restocks.restock-plan");
     }
 
     /**
@@ -27,6 +28,18 @@ class RestockController extends Controller
     {
         viewShare($service->getCreateData());
         return response()->view("kelola.restocks.create");
+    }
+
+    /**
+     * @param RestockService $service
+     * @param StoreRestockByForecastingRequest $request
+     * @return RedirectResponse
+     */
+    public function storeByForecasting(RestockService $service, StoreRestockByForecastingRequest $request): RedirectResponse
+    {
+        $response = $service->restockByForecasting($request->validated());
+        if ($this->isError($response)) return $this->getErrorResponse();
+        return redirect()->route('restocks.index', ["period" => request()->input("period")])->with("success", "Berhasil menambahkan data stok");
     }
 
     /**

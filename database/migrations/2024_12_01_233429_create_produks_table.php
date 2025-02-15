@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->string('jenis_produk');
             $table->string('satuan');
+            $table->bigInteger('hpp');
             $table->bigInteger('harga_satuan');
             $table->bigInteger('quantity');
             $table->timestamps();

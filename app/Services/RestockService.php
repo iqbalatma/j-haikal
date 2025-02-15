@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Services;
-use App\Enums\Enums\TransactionType;
+
+use App\Enums\TransactionType;
+use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;
@@ -26,8 +28,13 @@ class RestockService extends BaseService
      */
     public function getAllDataPaginated(): array
     {
+        $forecastings = collect();
+        if ($period = request()->input("period")) {
+            $forecastings = Forecasting::query()->with("product")->where("period", $period)->whereNull("actual_restock")->paginate();
+        }
         return [
             "title" => "Restok",
+            "forecastings" => $forecastings,
             "products" => Produk::query()->get()
         ];
     }
@@ -53,7 +60,7 @@ class RestockService extends BaseService
             DB::beginTransaction();
             $product = Produk::query()->findOrFail($requestedData["product_id"]);
 
-            if (!$product){
+            if (!$product) {
                 DB::rollBack();
                 return [
                     "success" => false,
@@ -84,5 +91,37 @@ class RestockService extends BaseService
         }
 
         return $response;
+    }
+
+    /**
+     * @param array $requestedData
+     * @return array
+     */
+    public function restockByForecasting(array $requestedData): array
+    {
+        try {
+            DB::beginTransaction();
+            foreach ($requestedData["forecastings"] as $forecasting) {
+                /** @var Forecasting $forecastingFromDB */
+                $forecastingFromDB = Forecasting::query()->findOrFail($forecasting["id"]);
+                $forecastingFromDB->actual_restock = $forecasting["quantity"];
+                $forecastingFromDB->save();
+
+                /** @var Produk $productFromDB */
+                $productFromDB = Produk::query()->findOrFail($forecastingFromDB->product_id);
+                $productFromDB->quantity += $forecasting["quantity"];
+                $productFromDB->save();
+            }
+            DB::commit();
+            $response = [
+                "success" => true,
+            ];
+        }catch (Exception $e){
+            DB::rollBack();
+            $response = getDefaultErrorResponse($e);
+        }
+
+        return $response;
+
     }
 }

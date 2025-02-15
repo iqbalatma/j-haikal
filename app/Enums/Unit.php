@@ -3,15 +3,12 @@
 namespace App\Enums;
 
 use ArchTech\Enums\Names;
+use ArchTech\Enums\Values;
 
-enum Unit
+enum Unit: string
 {
-    use Names;
-    case KILOGRAM;
-    case GRAM;
-    case TON;
-    case MILIGRAM;
-    case MILILITER;
-    case LITER;
-    case BUAH;
+    use Names, Values;
+    case BALL_1_KG = "BALL 1 KG";
+    case BALL_2_KG = "BALL 2 KG";
+    case BALL_4_KG = "BALL 4 KG";
 }

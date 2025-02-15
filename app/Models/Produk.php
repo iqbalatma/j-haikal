@@ -14,5 +14,5 @@ class Produk extends Model
     use HasFactory;
 
     protected $lable = "produks";
-    protected $fillable = ['kode_produk', 'nama_produk', 'jenis_produk', 'satuan', 'harga_satuan', "quantity"];
+    protected $fillable = ['kode_produk', 'nama_produk', 'jenis_produk', 'satuan', 'harga_satuan', "quantity", "hpp"];
 }

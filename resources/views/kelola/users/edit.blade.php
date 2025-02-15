@@ -1,4 +1,4 @@
-@php use App\Enums\Enums\Type;use App\Enums\Role;use App\Enums\Unit; @endphp
+@php use App\Enums\Role; @endphp
 @extends('kerangka.master')
 @section('title', 'Halaman Tambah Produk')
 @section('content')
@@ -45,7 +45,8 @@
                                     <select class="form-control" name="role">
                                         <option value>Silahkan pilih role</option>
                                         @foreach(Role::names() as $role)
-                                            <option value="{{$role}}" @if($role === $user->role) selected @endif>{{$role}}</option>
+                                            <option value="{{$role}}"
+                                                    @if($role === $user->role) selected @endif>{{$role}}</option>
                                         @endforeach
                                     </select>
                                     @error('role')
