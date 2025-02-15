@@ -9,9 +9,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title text-center">Table Kelola Restok</h4>
-                        <div class="ms-auto">
-                        <a class="btn btn-primary" href="{{ route('restocks.create') }}">Tambah Stok</a>
-                        </div>
                     </div>
 
                         <div class="card-content">

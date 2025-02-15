@@ -17,6 +17,16 @@ class RestockController extends Controller
     public function index(RestockService $service): Response
     {
         viewShare($service->getAllDataPaginated());
+        return response()->view("kelola.restocks.index");
+    }
+
+    /**
+     * @param RestockService $service
+     * @return Response
+     */
+    public function restockForecasting(RestockService $service): Response
+    {
+        viewShare($service->restockForForecasting());
         return response()->view("kelola.restocks.restock-plan");
     }
 
@@ -39,7 +49,7 @@ class RestockController extends Controller
     {
         $response = $service->restockByForecasting($request->validated());
         if ($this->isError($response)) return $this->getErrorResponse();
-        return redirect()->route('restocks.index', ["period" => request()->input("period")])->with("success", "Berhasil menambahkan data stok");
+        return redirect()->route('restocks.restock.by.forecasting', ["period" => request()->input("period")])->with("success", "Berhasil menambahkan data stok");
     }
 
     /**

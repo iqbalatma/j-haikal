@@ -214,7 +214,17 @@
 
                 @canany(["KEPALA_TOKO", "KEPALA_GUDANG"])
                     <li
-                        class="sidebar-item @if(request()->routeIs("restocks*")) active @endif ">
+                        class="sidebar-item @if(request()->routeIs("restocks.restock.by.forecasting")) active @endif ">
+                        <a href="{{route('restocks.restock.by.forecasting')}}" class='sidebar-link'>
+                            <i class="bi bi-boxes"></i>
+                            <span>Kelola Pembelian</span>
+                        </a>
+                    </li>
+                @endcanany
+
+                @canany(["KEPALA_TOKO", "KEPALA_GUDANG"])
+                    <li
+                        class="sidebar-item @if(request()->routeIs("restocks.index")) active @endif ">
                         <a href="{{route('restocks.index')}}" class='sidebar-link'>
                             <i class="bi bi-boxes"></i>
                             <span>Kelola Stok</span>

@@ -69,13 +69,17 @@ class ForecastingService extends BaseService
             $products = Produk::query()->select("id", "quantity")->get();
             $now = Carbon::createFromFormat("Y-m", $requestedData["year"] . "-" . $requestedData["month"])?->startOfMonth();
             $previous = Carbon::createFromFormat("Y-m", $requestedData["year"] . "-" . $requestedData["month"])?->startOfMonth()->subMonth();
+
             foreach ($products as $product) {
+                // untuk tahu actual penjualan dan prediksi
                 /** @var Produk $product */
                 $previousForecasting = Forecasting::query()
                     ->where("product_id", $product->id)
                     ->where("period", $previous->format("Y-m"))
                     ->first();
 
+
+                //ini untuk ketika belum ada forecasting
                 $currentTransactions = Transaction::query()
                     ->select([
                         DB::raw("SUM(quantity) as quantity"),
@@ -86,12 +90,14 @@ class ForecastingService extends BaseService
                     ->whereYear("transaction_date", $now->format("Y"))
                     ->first();
 
+                //ini untuk perhitungan rumus single exponential smoothing berdasarkan peramalan sebelumnya
                 if (!$previousForecasting) {
                     $prediction = $currentTransactions->quantity;
                 } else {
                     $prediction = ($this->alpha * $previousForecasting->actual) + ((1 - $this->alpha) * $previousForecasting->prediction);
                 }
 
+                //untuk menghitung mse, mad, mape
                 $forecastingByProduct = Forecasting::query()
                     ->where("product_id", $product->id)
                     ->whereNot("period", $now->format("Y-m"))
@@ -99,6 +105,11 @@ class ForecastingService extends BaseService
 
                 $initiateRange = $now->copy()->subMonths(12);
                 $lastRange = $now->copy()->subMonths(1);
+
+                //ini untuk menghitung safety
+                // sum untuk penjumlahan
+                // year untuk tahu
+                //month untuk
                 $transactions = Transaction::query()
                     ->select([
                         DB::raw("SUM(quantity) as quantity"),
@@ -115,6 +126,7 @@ class ForecastingService extends BaseService
                     ->orderBy(DB::raw('YEAR(transaction_date), MONTH(transaction_date)'))
                     ->get();
 
+                //ini untuk menghitung safety stock, rumus ada di file helper
                 $safetyStock = round(getSafetyStock($transactions), 0);
                 $forecasting = [
                     "period" => $now->format("Y-m"),

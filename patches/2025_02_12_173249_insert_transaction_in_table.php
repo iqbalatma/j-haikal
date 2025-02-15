@@ -52,7 +52,7 @@ return new class extends Patch {
                     Transaction::query()->create([
                         "product_id" => $product->id,
                         "supplier_id" => $supplier->id,
-                        "type" => TransactionType::SALE->name,
+                        "type" => TransactionType::RESTOCK->name,
                         "quantity" => getTrimmedOrNull($row[7]),
                         "stock_before" => null,
                         "stock_after" => null,

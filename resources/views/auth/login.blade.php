@@ -93,6 +93,9 @@
                 </label>
             </div>
             <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="submit">Log in</button>
+            <a href="{{route('forgot.password.show.forgot.password')}}">
+                <button class="btn btn-secondary btn-block btn-lg shadow-lg mt-3" type="button">Lupa Password</button>
+            </a>
         </form>
     </div>
 </div>

@@ -79,6 +79,7 @@ Route::middleware("auth:web")->group(function () {
     Route::middleware("permission:" . Role::KEPALA_TOKO->name . "," . Role::KEPALA_GUDANG->name)->group(function () {
         Route::prefix("restocks")->name("restocks.")->controller(RestockController::class)->group(function () {
             Route::get("", "index")->name("index");
+            Route::get("restock-by-forecasting", "restockForecasting")->name("restock.by.forecasting");
             Route::get("create", "create")->name("create");
             Route::post("", "store")->name("store");
             Route::post("restock-forecasting", "storeByForecasting")->name("store.by.forecasting");

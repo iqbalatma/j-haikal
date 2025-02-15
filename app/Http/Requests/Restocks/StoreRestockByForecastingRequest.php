@@ -26,6 +26,7 @@ class StoreRestockByForecastingRequest extends FormRequest
             "forecastings" => ["array" ,"min:1"],
             "forecastings.*.id" => [Rule::exists("forecasting", "id")],
             "forecastings.*.quantity" => ["numeric"],
+            "forecastings.*.supplier_id" => ["numeric", Rule::exists("supliers", "id")],
         ];
     }
 }

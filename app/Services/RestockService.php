@@ -28,6 +28,17 @@ class RestockService extends BaseService
      */
     public function getAllDataPaginated(): array
     {
+        return [
+            "title" => "Restok",
+            "products" => Produk::query()->get()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function restockForForecasting(): array
+    {
         $forecastings = collect();
         if ($period = request()->input("period")) {
             $forecastings = Forecasting::query()->with("product")->where("period", $period)->whereNull("actual_restock")->paginate();
@@ -35,6 +46,7 @@ class RestockService extends BaseService
         return [
             "title" => "Restok",
             "forecastings" => $forecastings,
+            "suppliers" => Suplier::query()->get(),
             "products" => Produk::query()->get()
         ];
     }
@@ -99,24 +111,43 @@ class RestockService extends BaseService
      */
     public function restockByForecasting(array $requestedData): array
     {
+        // forecasting 1 produknya MGS => purchasing plan 60 => actual restock 55
         try {
             DB::beginTransaction();
             foreach ($requestedData["forecastings"] as $forecasting) {
+                //ini untuk update forecasting actual stock
                 /** @var Forecasting $forecastingFromDB */
                 $forecastingFromDB = Forecasting::query()->findOrFail($forecasting["id"]);
                 $forecastingFromDB->actual_restock = $forecasting["quantity"];
                 $forecastingFromDB->save();
 
+
+                //ini untuk update kuantitas produk
                 /** @var Produk $productFromDB */
                 $productFromDB = Produk::query()->findOrFail($forecastingFromDB->product_id);
+                $stockBefore = $productFromDB->quantity;
                 $productFromDB->quantity += $forecasting["quantity"];
+                $stockAfter = $productFromDB->quantity;
                 $productFromDB->save();
+
+
+                //ini untuk menambahkan transaksi
+                Transaction::query()->create([
+                    "product_id" => $productFromDB->id,
+                    "supplier_id" => $forecasting["supplier_id"],
+                    "quantity" => $forecasting["quantity"],
+                    "type" => TransactionType::RESTOCK->name,
+                    "created_by_id" => Auth::id(),
+                    "transaction_date" => Carbon::now(),
+                    "stock_before" => $stockBefore,
+                    "stock_after" => $stockAfter
+                ]);
             }
             DB::commit();
             $response = [
                 "success" => true,
             ];
-        }catch (Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             $response = getDefaultErrorResponse($e);
         }

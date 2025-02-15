@@ -58,7 +58,7 @@ if (!function_exists("getMAPE")) {
             return null;
         }
 
-        $collection = collect($data);
+        $collection = collect($data)->where("actual", ">", 0);
 
         $total = 0;
 

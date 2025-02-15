@@ -9,7 +9,7 @@
                         <h4 class="card-title text-center">Table Kelola Restok</h4>
                         <div class="ms-auto">
                             <form class="form" data-parsley-validate method="GET"
-                                  action="{{route('restocks.index')}}">
+                                  action="{{route('restocks.restock.by.forecasting')}}">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -31,7 +31,7 @@
                                         <button type="submit" class="btn btn-primary me-1 mb-1">
                                             Filter
                                         </button>
-                                        <a href="{{route("transactions.index")}}"
+                                        <a href="{{route("restocks.restock.by.forecasting")}}"
                                            type="reset"
                                            class="btn btn-light-secondary me-1 mb-1"
                                         >
@@ -194,6 +194,8 @@
             integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script>
         $(function () {
+            const suppliers = @json($suppliers);
+
             $("#cb-all").on("change", function () {
                 const isAllChecked = $(this).prop("checked");
 
@@ -211,7 +213,8 @@
                         const productName = $(this).data('product-name')
                         const productId = $(this).data('product-id')
                         const purchasingPlan = $(this).data('purchasing-plan')
-                        $("#form-row").append(`
+
+                        let html = `
                  <div class="col-6">
                                                         <label class="form-label">Nama : ${productName}</label>
     <br>
@@ -220,8 +223,17 @@
                                                         <label class="form-label"> Rencana Belanja : ${purchasingPlan}</label>
 <input type="hidden" name="forecastings[${index}][id]" value="${id}">
                                                         <input type="number" name="forecastings[${index}][quantity]" class="form-control" placeholder="Silahkan masukkan jumlah belanja" />
+<label class="form-label"></label>
+<select name="forecastings[${index}][supplier_id]"   class="form-control">`
+
+                        suppliers.forEach(function (item){
+                            html += `<option value='${item.id}'>${item.nama_suplier}</option>`
+                        })
+
+                        html += `</select>
                                                     </div>
-                `)
+                `
+                        $("#form-row").append(html)
                     }
 
                 })
