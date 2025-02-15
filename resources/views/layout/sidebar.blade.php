@@ -217,7 +217,7 @@
                         class="sidebar-item @if(request()->routeIs("restocks.restock.by.forecasting")) active @endif ">
                         <a href="{{route('restocks.restock.by.forecasting')}}" class='sidebar-link'>
                             <i class="bi bi-boxes"></i>
-                            <span>Kelola Pembelian</span>
+                            <span>Produk Masuk</span>
                         </a>
                     </li>
                 @endcanany

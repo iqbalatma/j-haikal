@@ -6,51 +6,49 @@
     <section class="section">
         <div class="row" id="basic-table">
             <div class="col-12 col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Chart
-                        </h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <form class="form" data-parsley-validate method="GET"
-                                  action="{{route('forecasting.index')}}">
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="kode_produk" class="form-label">Produk</label>
-                                            <select name="product_id" class="form-control">
-                                                @foreach($products as $product)
-                                                    <option value="{{$product->id}}">{{$product->nama_produk}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">
-                                            Filter
-                                        </button>
-                                        <a href="{{route("forecasting.index")}}"
-                                           type="reset"
-                                           class="btn btn-light-secondary me-1 mb-1"
-                                        >
-                                            Reset
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    {{--                                    <div class="col-12 d-flex justify-content-center p-5" style="height: 600px">--}}
-                                    <canvas id="forecasting"></canvas>
-                                    {{--                                    </div>--}}
-                                </div>
+{{--                <div class="card">--}}
+{{--                    <div class="card-header">--}}
+{{--                        <h4 class="card-title">--}}
+{{--                            Chart--}}
+{{--                        </h4>--}}
+{{--                    </div>--}}
+{{--                    <div class="card-content">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <form class="form" data-parsley-validate method="GET"--}}
+{{--                                  action="{{route('forecasting.index')}}">--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-md-6 col-12">--}}
+{{--                                        <div class="form-group">--}}
+{{--                                            <label for="kode_produk" class="form-label">Produk</label>--}}
+{{--                                            <select name="product_id" class="form-control">--}}
+{{--                                                @foreach($products as $product)--}}
+{{--                                                    <option value="{{$product->id}}">{{$product->nama_produk}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-12 d-flex justify-content-end">--}}
+{{--                                        <button type="submit" class="btn btn-primary me-1 mb-1">--}}
+{{--                                            Filter--}}
+{{--                                        </button>--}}
+{{--                                        <a href="{{route("forecasting.index")}}"--}}
+{{--                                           type="reset"--}}
+{{--                                           class="btn btn-light-secondary me-1 mb-1"--}}
+{{--                                        >--}}
+{{--                                            Reset--}}
+{{--                                        </a>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="row">--}}
+{{--                                    <canvas id="forecasting"></canvas>--}}
+{{--                                </div>--}}
 
-                            </form>
-                        </div>
-                    </div>
-                </div>
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="card">
                     <div class="card-header">
@@ -134,27 +132,20 @@
                                         <th>KODE PRODUK</th>
                                         <th>NAMA PRODUK</th>
                                         <th>PERIODE</th>
-                                        <th>PENJUALAN</th>
                                         <th>PREDIKSI</th>
                                         <th>STOK AMAN</th>
-                                        <th>RENCANA PEMBELIAN</th>
-                                        <th>AKTUALISASI PEMBELIAN</th>
                                         <th>MAPE</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
                                     @foreach ($forecastings as $key => $forecasting)
                                         <tr>
                                             <td>{{ $forecastings->firstItem() + $key }}</td>
                                             <td>{{ $forecasting->product?->kode_produk }}</td>
                                             <td>{{ $forecasting->product?->nama_produk }}</td>
                                             <td>{{ $forecasting->period }}</td>
-                                            <td>{{ $forecasting->actual ?? "-" }}</td>
                                             <td>{{ $forecasting->prediction }}</td>
                                             <td>{{ $forecasting->safety_stock }}</td>
-                                            <td>{{ $forecasting->purchasing_plan }}</td>
-                                            <td>{{ $forecasting->actual_restock ?? "-" }}</td>
                                             <td>{{ $forecasting->mape }}</td>
                                         </tr>
                                     @endforeach
