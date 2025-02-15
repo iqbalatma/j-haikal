@@ -124,7 +124,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
                     <a href="{{route("dashboard")}}">
-                        <img src="{{asset('assets/images/logo.svg')}}" alt="logo">
+                        <img src="{{asset('assets/images/logo_2.png')}}" style="height: 70px" alt="logo">
                     </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">

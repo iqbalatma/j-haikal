@@ -68,7 +68,8 @@
 <body>
 <div id="auth">
     <div class="login-box">
-        <h1 class="auth-title">Lupa Password.</h1>
+        <img src="{{asset('assets/images/logo_1.png')}}" width="150px" alt="logo"/>
+        <h1 class="auth-title mt-4">Lupa Password.</h1>
         <p class="auth-subtitle mb-5">Silahkan masukkan email untuk mengirimkan tautan reset password.</p>
 
         <x-alert></x-alert>
