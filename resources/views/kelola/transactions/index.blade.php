@@ -107,8 +107,8 @@
                                         <th>HARGA SATUAN</th>
                                         <th>NAMA SUPPLIER</th>
                                         <th>KUANTITAS</th>
-                                        <th>STOK SEBELUMNYA</th>
-                                        <th>STOK SESUDAHNYA</th>
+{{--                                        <th>STOK SEBELUMNYA</th>--}}
+{{--                                        <th>STOK SESUDAHNYA</th>--}}
                                         <th>TIPE TRANSAKSI</th>
                                         <th>TANGGAL TRANSAKSI</th>
                                     </tr>
@@ -125,8 +125,8 @@
                                             <td>{{ formatToRupiah($transaction->product?->harga_satuan) }}</td>
                                             <td>{{ $transaction->supplier?->nama_suplier }}</td>
                                             <td>{{ $transaction->quantity }} {{$transaction->product?->satuan}}</td>
-                                            <td>{{ $transaction->stock_before}} {{$transaction->product?->satuan}}</td>
-                                            <td>{{ $transaction->stock_after}} {{$transaction->product?->satuan}}</td>
+{{--                                            <td>{{ $transaction->stock_before}} {{$transaction->product?->satuan}}</td>--}}
+{{--                                            <td>{{ $transaction->stock_after}} {{$transaction->product?->satuan}}</td>--}}
                                             <td>{{$transaction->type}}</td>
                                             <td>{{$transaction->transaction_date}}</td>
                                         </tr>
