@@ -167,13 +167,13 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-{{--                <li--}}
-{{--                    class="sidebar-item  ">--}}
-{{--                    <a href="{{route('dashboard')}}" class='sidebar-link'>--}}
-{{--                        <i class="bi bi-grid-fill"></i>--}}
-{{--                        <span>Beranda</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                {{--                <li--}}
+                {{--                    class="sidebar-item  ">--}}
+                {{--                    <a href="{{route('dashboard')}}" class='sidebar-link'>--}}
+                {{--                        <i class="bi bi-grid-fill"></i>--}}
+                {{--                        <span>Beranda</span>--}}
+                {{--                    </a>--}}
+                {{--                </li>--}}
 
                 @can("ADMINISTRATOR")
                     <li
@@ -221,6 +221,14 @@
                         </a>
                     </li>
                 @endcanany
+
+                <li
+                    class="sidebar-item @if(request()->routeIs("factures.index")) active @endif ">
+                    <a href="{{route('factures.index')}}" class='sidebar-link'>
+                        <i class="bi bi-journal-arrow-down"></i>
+                        <span>Faktur</span>
+                    </a>
+                </li>
 
                 @canany(["KEPALA_TOKO"])
                     <li
