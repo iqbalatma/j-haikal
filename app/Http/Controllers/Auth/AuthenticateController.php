@@ -35,7 +35,7 @@ class AuthenticateController extends Controller
 
         if ($this->isError($response)) return $this->getErrorResponse();
 
-        return redirect()->intended('/');
+        return redirect()->intended('/dashboard');
     }
 
 

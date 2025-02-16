@@ -128,6 +128,12 @@ class ForecastingService extends BaseService
 
                 //ini untuk menghitung safety stock, rumus ada di file helper
                 $safetyStock = round(getSafetyStock($transactions), 0);
+                $purchasingPlan = round(round($prediction, 0) + $safetyStock - $product->quantity, 2);
+
+                //ini kalau purchasing plannya gaboleh nol
+                if ($purchasingPlan<0){
+                    $purchasingPlan = 0;
+                }
                 $forecasting = [
                     "period" => $now->format("Y-m"),
                     "product_id" => $product->id,
@@ -135,7 +141,7 @@ class ForecastingService extends BaseService
                     "actual_restock" => null,
                     "prediction" => round($prediction, 0),
                     "safety_stock" => $safetyStock,
-                    "purchasing_plan" => round(round($prediction, 0) + $safetyStock - $product->quantity, 2),
+                    "purchasing_plan" => $purchasingPlan,
                     "mse" => round(getMSE($forecastingByProduct->toArray()), 2),
                     "mad" => round(getMAD($forecastingByProduct->toArray()), 2),
                     "mape" => round(getMAPE($forecastingByProduct->toArray()), 2),

@@ -25,13 +25,14 @@ Route::middleware("guest")->group(function () {
     });
 });
 
+Route::get("/", function (){
+    return redirect()->route("login");
+});
+
 
 Route::middleware("auth:web")->group(function () {
     Route::post("logout", [\App\Http\Controllers\Auth\AuthenticateController::class, "logout"])->name("logout");
 
-    Route::get('/', function () {
-        return redirect()->route("dashboard");
-    });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix("users")->name("users.")->controller(UserController::class)->middleware("permission:" . Role::ADMINISTRATOR->name)->group(function () {

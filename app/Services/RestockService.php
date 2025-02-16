@@ -3,14 +3,18 @@
 namespace App\Services;
 
 use App\Enums\TransactionType;
+use App\Models\Facture;
 use App\Models\Forecasting;
 use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Transaction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Iqbalatma\LaravelServiceRepo\BaseService;
 
 class RestockService extends BaseService
@@ -183,12 +187,52 @@ class RestockService extends BaseService
         // forecasting 1 produknya MGS => purchasing plan 60 => actual restock 55
         try {
             DB::beginTransaction();
+            $forecastings = collect();
             foreach ($requestedData["forecastings"] as $forecasting) {
                 //ini untuk update forecasting actual stock
                 /** @var Forecasting $forecastingFromDB */
                 $forecastingFromDB = Forecasting::query()->findOrFail($forecasting["id"]);
                 $forecastingFromDB->supplier_id = $forecasting["supplier_id"];
                 $forecastingFromDB->save();
+
+                $forecastings->push($forecastingFromDB);
+            }
+
+            $factures = collect();
+
+            $facturePath = storage_path("app/factures");
+            File::ensureDirectoryExists($facturePath);
+            foreach ($forecastings->groupBy("supplier_id") as $key => $supplierGroup) {
+                $number =  "BILL-" . Str::random();
+                $createdFacture = Facture::query()->create([
+                    "supplier_id" => $key,
+                    "period" => request()->input("period"),
+                    "filename" => null,
+                    "fullpath" => null,
+                    "number" => $number
+                ]);
+
+                $factures->push($createdFacture);
+                foreach ($supplierGroup as $forecasting){
+                    $forecasting->facture_id = $createdFacture->id;
+                    $forecasting->save();
+                }
+            }
+
+            foreach ($factures as $facture){
+                $pdf = Pdf::loadView('pdf.nota', [
+                    "title" => "Nota",
+                    "facture" => $facture,
+                ]);
+
+                $fileName = "$facture->number.pdf";
+
+                $fullPath = "$facturePath/$fileName";
+                $pdf->save($fullPath);
+
+                $facture->filename = $fileName;
+                $facture->fullpath = $fullPath;
+                $facture->save();
             }
             DB::commit();
             $response = [

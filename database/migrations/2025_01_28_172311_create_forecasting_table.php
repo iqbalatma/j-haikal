@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->unsignedBigInteger("product_id");
             $table->unsignedBigInteger("supplier_id")->nullable();
+            $table->uuid("facture_id")->nullable();
             $table->string("period");
             $table->integer("actual")->nullable()->comment("This is data of actual sales");
             $table->integer("actual_restock")->nullable()->comment("This is data of actual restock that will increase data in table product");

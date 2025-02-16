@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "archtechx/enums": "^1.1",
+        "barryvdh/laravel-dompdf": "^3.1",
         "dentro/laravel-patcher": "^1.4",
         "iqbalatma/laravel-service-repo": "^3.4",
         "iqbalatma/laravel-utils": "^1.5",

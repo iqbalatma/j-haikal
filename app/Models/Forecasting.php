@@ -28,7 +28,7 @@ class Forecasting extends Model
 
     protected $table = 'forecasting';
     protected $fillable = [
-        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape", "actual_restock", "supplier_id"
+        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape", "actual_restock", "supplier_id", "facture_id"
     ];
 
     public function product(): BelongsTo
@@ -39,5 +39,10 @@ class Forecasting extends Model
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Suplier::class, "supplier_id", "id");
+    }
+
+    public function facture(): BelongsTo
+    {
+        return $this->belongsTo(Facture::class, "facture_id", "id");
     }
 }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Restocks\StoreRestockByForecastingRequest;
 use App\Http\Requests\Restocks\StoreRestockByForecastingSupplierRequest;
 use App\Http\Requests\Restocks\StoreRestockReqest;
+use App\Models\Facture;
 use App\Services\RestockService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
