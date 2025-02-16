@@ -28,11 +28,16 @@ class Forecasting extends Model
 
     protected $table = 'forecasting';
     protected $fillable = [
-        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape", "actual_restock"
+        "product_id", "safety_stock", "purchasing_plan", "period", "actual", "prediction", "mad", "mse", "mape", "actual_restock", "supplier_id"
     ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Produk::class, "product_id", "id");
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Suplier::class, "supplier_id", "id");
     }
 }

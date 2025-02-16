@@ -6,10 +6,10 @@
             <div class="col-12 col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title text-center">Table Kelola Produk Masuk</h4>
+                        <h4 class="card-title text-center">Table Kelola Pembelian</h4>
                         <div class="ms-auto">
                             <form class="form" data-parsley-validate method="GET"
-                                  action="{{route('restocks.restock.by.forecasting')}}">
+                                  action="{{route('restocks.restock.add.supplier')}}">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -31,7 +31,7 @@
                                         <button type="submit" class="btn btn-primary me-1 mb-1">
                                             Filter
                                         </button>
-                                        <a href="{{route("restocks.restock.by.forecasting")}}"
+                                        <a href="{{route("restocks.restock.add.supplier")}}"
                                            type="reset"
                                            class="btn btn-light-secondary me-1 mb-1"
                                         >
@@ -48,7 +48,7 @@
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="btn-belanja"
                                     data-bs-target="#belanja-modal">
-                                Masukkan Produk
+                                Belanja
                             </button>
 
                             <!-- Modal -->
@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form id="form-belanja" method="POST"
-                                                  action="{{route('restocks.store.by.forecasting', ["period" => request()->input('period')])}}">
+                                                  action="{{route('restocks.store.by.forecasting.supplier', ["period" => request()->input('period')])}}">
                                                 @csrf
                                                 <div class="row g-4" id="form-row">
 
@@ -88,16 +88,16 @@
                                     <tr>
                                         <th>
                                             <label for="cb-all">NO</label>
+
                                             <br>
                                             <label for="cb-all">All</label>
                                             <input id="cb-all" type="checkbox">
                                         </th>
                                         <th>KODE PRODUK</th>
                                         <th>NAMA PRODUK</th>
-                                        <th>NAMA SUPPLIER</th>
                                         <th>STOK PRODUK SAAT INI</th>
                                         <th>PERIODE</th>
-                                        <th>JUMLAH PEMBELIAN</th>
+                                        <th>RENCANA PEMBELIAN</th>
                                         <th>AKTUALISASI PEMBELIAN</th>
                                     </tr>
                                     </thead>
@@ -112,13 +112,11 @@
                                                        data-period="{{$forecasting->period}}"
                                                        data-id="{{$forecasting->id}}"
                                                        data-purchasing-plan="{{$forecasting->purchasing_plan}}"
-                                                       data-supplier-name="{{$forecasting->supplier?->nama_suplier}}"
                                                 >
                                                 {{ $forecastings->firstItem() + $key }}
                                             </td>
                                             <td>{{ $forecasting->product?->kode_produk }}</td>
                                             <td>{{ $forecasting->product?->nama_produk }}</td>
-                                            <td>{{ $forecasting->supplier?->nama_suplier ?? "Supplier Belum Ditentukan" }}</td>
                                             <td>{{ $forecasting->product?->quantity }}</td>
                                             <td>{{ $forecasting->period }}</td>
                                             <td>{{ $forecasting->purchasing_plan }}</td>
@@ -207,7 +205,6 @@
                         const productName = $(this).data('product-name')
                         const productId = $(this).data('product-id')
                         const purchasingPlan = $(this).data('purchasing-plan')
-                        const supplierName = $(this).data('supplier-name')
 
                         let html = `
                  <div class="col-6">
@@ -215,13 +212,18 @@
     <br>
                                                         <label class="form-label"> Periode : ${period}</label>
     <br>
-                                                        <label class="form-label"> Jumlah Pembelian : ${purchasingPlan}</label>
-    <br>
-                                                        <label class="form-label"> Nama Supplier : ${supplierName}</label>
+                                                        <label class="form-label"> Rencana Belanja : ${purchasingPlan}</label>
 <input type="hidden" name="forecastings[${index}][id]" value="${id}">
-                                                        <input type="number" name="forecastings[${index}][quantity]" class="form-control" placeholder="Silahkan masukkan jumlah belanja" />
-<label class="form-label"></label></div>`
+<label class="form-label"></label>
+<select name="forecastings[${index}][supplier_id]"   class="form-control">`
 
+                        suppliers.forEach(function (item){
+                            html += `<option value='${item.id}'>${item.nama_suplier}</option>`
+                        })
+
+                        html += `</select>
+                                                    </div>
+                `
                         $("#form-row").append(html)
                     }
 

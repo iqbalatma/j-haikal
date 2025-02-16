@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Restocks\StoreRestockByForecastingRequest;
+use App\Http\Requests\Restocks\StoreRestockByForecastingSupplierRequest;
 use App\Http\Requests\Restocks\StoreRestockReqest;
 use App\Services\RestockService;
 use Illuminate\Http\RedirectResponse;
@@ -30,6 +31,17 @@ class RestockController extends Controller
         return response()->view("kelola.restocks.restock-plan");
     }
 
+
+    /**
+     * @param RestockService $service
+     * @return Response
+     */
+    public function restockAddSupplier(RestockService $service): Response
+    {
+        viewShare($service->restockForForecastingSupplier());
+        return response()->view("kelola.restocks.restock-supplier");
+    }
+
     /**
      * @param RestockService $service
      * @return Response
@@ -39,6 +51,20 @@ class RestockController extends Controller
         viewShare($service->getCreateData());
         return response()->view("kelola.restocks.create");
     }
+
+
+    /**
+     * @param RestockService $service
+     * @param StoreRestockByForecastingSupplierRequest $request
+     * @return RedirectResponse
+     */
+    public function storeByForecastingSupplier(RestockService $service, StoreRestockByForecastingSupplierRequest $request): RedirectResponse
+    {
+        $response = $service->restockByForecastingSupplier($request->validated());
+        if ($this->isError($response)) return $this->getErrorResponse();
+        return redirect()->route('restocks.restock.add.supplier', ["period" => request()->input("period")])->with("success", "Berhasil menambahkan supplier");
+    }
+
 
     /**
      * @param RestockService $service

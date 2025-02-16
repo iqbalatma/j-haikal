@@ -212,17 +212,27 @@
                     </li>
                 @endcan
 
-                @canany(["KEPALA_TOKO", "KEPALA_GUDANG"])
+                @canany(["KEPALA_GUDANG"])
                     <li
                         class="sidebar-item @if(request()->routeIs("restocks.restock.by.forecasting")) active @endif ">
                         <a href="{{route('restocks.restock.by.forecasting')}}" class='sidebar-link'>
-                            <i class="bi bi-boxes"></i>
+                            <i class="bi bi-download"></i>
                             <span>Produk Masuk</span>
                         </a>
                     </li>
                 @endcanany
 
-                @canany(["KEPALA_TOKO", "KEPALA_GUDANG"])
+                @canany(["KEPALA_TOKO"])
+                    <li
+                        class="sidebar-item @if(request()->routeIs("restocks.restock.add.supplier")) active @endif ">
+                        <a href="{{route('restocks.restock.add.supplier')}}" class='sidebar-link'>
+                            <i class="bi bi-receipt-cutoff"></i>
+                            <span>Kelola Pembelian</span>
+                        </a>
+                    </li>
+                @endcanany
+
+                @canany(["KEPALA_GUDANG"])
                     <li
                         class="sidebar-item @if(request()->routeIs("restocks.index")) active @endif ">
                         <a href="{{route('restocks.index')}}" class='sidebar-link'>

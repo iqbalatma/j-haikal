@@ -54,6 +54,23 @@ class RestockService extends BaseService
     /**
      * @return array
      */
+    public function restockForForecastingSupplier(): array
+    {
+        $forecastings = collect();
+        if ($period = request()->input("period")) {
+            $forecastings = Forecasting::query()->with("product")->where("period", $period)->whereNull("supplier_id")->paginate();
+        }
+        return [
+            "title" => "Restok",
+            "forecastings" => $forecastings,
+            "suppliers" => Suplier::query()->get(),
+            "products" => Produk::query()->get()
+        ];
+    }
+
+    /**
+     * @return array
+     */
     public function getCreateData(): array
     {
         return [
@@ -134,7 +151,7 @@ class RestockService extends BaseService
                 //ini untuk menambahkan transaksi
                 Transaction::query()->create([
                     "product_id" => $productFromDB->id,
-                    "supplier_id" => $forecasting["supplier_id"],
+                    "supplier_id" => $forecastingFromDB->supplier_id,
                     "quantity" => $forecasting["quantity"],
                     "type" => TransactionType::RESTOCK->name,
                     "created_by_id" => Auth::id(),
@@ -142,6 +159,36 @@ class RestockService extends BaseService
                     "stock_before" => $stockBefore,
                     "stock_after" => $stockAfter
                 ]);
+            }
+            DB::commit();
+            $response = [
+                "success" => true,
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $response = getDefaultErrorResponse($e);
+        }
+
+        return $response;
+
+    }
+
+
+    /**
+     * @param array $requestedData
+     * @return array
+     */
+    public function restockByForecastingSupplier(array $requestedData): array
+    {
+        // forecasting 1 produknya MGS => purchasing plan 60 => actual restock 55
+        try {
+            DB::beginTransaction();
+            foreach ($requestedData["forecastings"] as $forecasting) {
+                //ini untuk update forecasting actual stock
+                /** @var Forecasting $forecastingFromDB */
+                $forecastingFromDB = Forecasting::query()->findOrFail($forecasting["id"]);
+                $forecastingFromDB->supplier_id = $forecasting["supplier_id"];
+                $forecastingFromDB->save();
             }
             DB::commit();
             $response = [

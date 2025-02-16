@@ -34,7 +34,7 @@ Route::middleware("auth:web")->group(function () {
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::prefix("users")->name("users.")->controller(UserController::class)->middleware("permission:".Role::ADMINISTRATOR->name)->group(function () {
+    Route::prefix("users")->name("users.")->controller(UserController::class)->middleware("permission:" . Role::ADMINISTRATOR->name)->group(function () {
         Route::get("", "index")->name("index");
         Route::get("create", "create")->name("create");
         Route::post("", "store")->name("store");
@@ -76,13 +76,16 @@ Route::middleware("auth:web")->group(function () {
         });
     });
 
-    Route::middleware("permission:" . Role::KEPALA_TOKO->name . "," . Role::KEPALA_GUDANG->name)->group(function () {
-        Route::prefix("restocks")->name("restocks.")->controller(RestockController::class)->group(function () {
-            Route::get("", "index")->name("index");
-            Route::get("restock-by-forecasting", "restockForecasting")->name("restock.by.forecasting");
-            Route::get("create", "create")->name("create");
-            Route::post("", "store")->name("store");
-            Route::post("restock-forecasting", "storeByForecasting")->name("store.by.forecasting");
-        });
+    Route::prefix("restocks")->name("restocks.")->controller(RestockController::class)->group(function () {
+        Route::get("", "index")->name("index")->middleware("permission:".Role::KEPALA_GUDANG->name);
+        Route::get("create", "create")->name("create");
+        Route::post("", "store")->name("store");
+
+        Route::get("restock-by-forecasting", "restockForecasting")->name("restock.by.forecasting")->middleware("permission:".Role::KEPALA_GUDANG->name);
+        Route::post("restock-forecasting", "storeByForecasting")->name("store.by.forecasting")->middleware("permission:".Role::KEPALA_GUDANG->name);
+
+
+        Route::get("restock-add-supplier", "restockAddSupplier")->name("restock.add.supplier")->middleware("permission:".Role::KEPALA_TOKO->name);
+        Route::post("restock-add-supplier", "storeByForecastingSupplier")->name("store.by.forecasting.supplier")->middleware("permission:".Role::KEPALA_TOKO->name);
     });
 });
