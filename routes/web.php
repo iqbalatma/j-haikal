@@ -2,6 +2,7 @@
 
 use App\Enums\Role;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FactureController;
 use App\Http\Controllers\ForecastingController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RestockController;
@@ -34,6 +35,11 @@ Route::middleware("auth:web")->group(function () {
     Route::post("logout", [\App\Http\Controllers\Auth\AuthenticateController::class, "logout"])->name("logout");
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix("factures")->name("factures.")->controller(FactureController::class)->group(function () {
+       Route::get("", "index")->name("index");
+       Route::get("download/{id}", "download")->name("download");
+    });
 
     Route::prefix("users")->name("users.")->controller(UserController::class)->middleware("permission:" . Role::ADMINISTRATOR->name)->group(function () {
         Route::get("", "index")->name("index");
