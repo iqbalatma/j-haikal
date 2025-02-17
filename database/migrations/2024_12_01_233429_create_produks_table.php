@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('satuan');
             $table->bigInteger('hpp');
             $table->bigInteger('harga_satuan');
-            $table->bigInteger('quantity');
+            $table->bigInteger('quantity')->default(0);
             $table->timestamps();
         });
     }

@@ -63,17 +63,7 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="first-name-horizontal">Stok</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="number" id="quantity" name="quantity"
-                                           class="form-control @error('quantity') is invalid @enderror"
-                                           value="{{ old('quantity') }}" placeholder="Stok">
-                                    @error('quantity')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+
                                 <div class="col-md-4">
                                     <label for="first-name-horizontal">Harga Satuan</label>
                                 </div>
@@ -82,6 +72,18 @@
                                            class="form-control @error('harga_satuan') is invalid @enderror"
                                            value="{{ old('harga_satuan') }}" placeholder="Harga Satuan">
                                     @error('harga_satuan')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="first-name-horizontal">HPP</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <input type="number" id="hpp" name="hpp"
+                                           class="form-control @error('hpp') is invalid @enderror"
+                                           value="{{ old('hpp') }}" placeholder="Harga Satuan">
+                                    @error('hpp')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

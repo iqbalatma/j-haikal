@@ -28,6 +28,7 @@
                                             <th>JENIS PRODUK</th>
                                             <th>SATUAN</th>
                                             <th>HARGA SATUAN</th>
+                                            <th>HPP</th>
                                             <th>AKSI</th>
                                         </tr>
                                     </thead>
@@ -41,6 +42,7 @@
                                           <td>{{ $produk->jenis_produk }}</td>
                                           <td>{{ $produk->satuan}}</td>
                                           <td>{{ formatToRupiah($produk->harga_satuan) }}</td>
+                                          <td>{{ formatToRupiah($produk->hpp) }}</td>
                                           <td>
                                                 <div class="d-flex">
                                                     <a href="{{ route('produk.edit', $produk->id) }}"
